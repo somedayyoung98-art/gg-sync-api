@@ -4,12 +4,16 @@
 
 Fetch the latest OpenAPI contract, compare it to a cached baseline, regenerate TypeScript types and an SDK, and optionally emit React Query hooks, MSW mocks, or Zod schemas. Breaking API changes can fail your CI before bad code ships.
 
+**Source:** [github.com/somedayyoung98-art/gg-sync-api](https://github.com/somedayyoung98-art/gg-sync-api) (monorepo package `packages/api-sync`)
+
 ## Install
 
 ```bash
 pnpm add -D @gg-sync/api-sync
 # or: npm i -D @gg-sync/api-sync
 ```
+
+> Package is published to npm when maintainers run `pnpm release`. Until then, clone the [monorepo](https://github.com/somedayyoung98-art/gg-sync-api) and use `pnpm link` or workspace for local development.
 
 Add a script to `package.json`:
 
@@ -323,8 +327,8 @@ pnpm version-packages
 pnpm release
 ```
 
-Release checklist: `specs/001-api-sync-infra/docs/release.md` (in the gg-sync-api monorepo).
+Release checklist: [docs/publish-to-github-and-npm.md](https://github.com/somedayyoung98-art/gg-sync-api/blob/main/docs/publish-to-github-and-npm.md)
 
 ## License
 
-ISC
+[MIT](https://github.com/somedayyoung98-art/gg-sync-api/blob/main/LICENSE)

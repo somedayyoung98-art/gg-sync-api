@@ -95,4 +95,4 @@ git push origin v1.0.0
 
 在 GitHub 仓库 Settings → Secrets → Actions 添加 `NPM_TOKEN`（npm Access Token，Publish 权限），再配置 workflow 在 tag 推送时执行 `pnpm release`。
 
-详见 `specs/001-api-sync-infra/docs/release.md`。
+发布前请执行 `pnpm test && pnpm build`。
