@@ -1,7 +1,12 @@
 {
   "name": "@gg-sync/generator-orval",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Orval codegen bridge plugin",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -13,7 +18,9 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "test": "vitest run --passWithNoTests"

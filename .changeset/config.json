@@ -18,5 +18,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["gg-sync-api", "example-single-service", "example-multi-service"]
+  "ignore": ["example-single-service", "example-multi-service"]
 }

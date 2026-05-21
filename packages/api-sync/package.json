@@ -1,6 +1,6 @@
 {
   "name": "@gg-sync/api-sync",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Schema-driven API sync — single install entry",
   "license": "MIT",
   "repository": {
@@ -16,11 +16,15 @@
   },
   "type": "module",
   "bin": {
-    "sync-api": "./bin/sync-api.js"
+    "sync-api": "bin/sync-api.js"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist", "bin", "README.md"],
+  "files": [
+    "dist",
+    "bin",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsup",
     "prepack": "pnpm run build"

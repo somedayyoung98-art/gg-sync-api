@@ -1,7 +1,12 @@
 {
   "name": "@gg-sync/core",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "API sync pipeline orchestrator",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

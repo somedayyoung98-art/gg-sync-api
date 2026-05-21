@@ -1,98 +1,115 @@
 # 发布到 GitHub 与 npm
 
-仓库地址：<https://github.com/somedayyoung98-art/gg-sync-api>
+仓库：<https://github.com/somedayyoung98-art/gg-sync-api>
 
-## 1. 把本地代码推到 GitHub
+## 一、GitHub（已完成可跳过）
 
-远程目前只有 `LICENSE`，本地在分支 `001-api-sync-infra`，需要合并后推到 `main`。
+```powershell
+git push origin HEAD:main
+```
+
+## 二、发布到 npm（@gg-sync/* v1.0.0）
+
+### 前提（必做）
+
+1. **npm 账号**  
+   注册：<https://www.npmjs.com/signup>
+
+2. **创建组织 `gg-sync`**（否则发布会 `404 Not Found`）  
+   - 打开：<https://www.npmjs.com/org/create>  
+   - Organization name 填：**`gg-sync`**（与包名 `@gg-sync/...` 一致）  
+   - 选择 **Unlimited public packages**（免费公开包）  
+   - 你的 npm 用户必须是该组织的 owner/member  
+
+3. **本机登录官方源**（不要用仅镜像的登录）
+
+   ```powershell
+   npm login --registry=https://registry.npmjs.org
+   npm whoami --registry=https://registry.npmjs.org
+   ```
+
+4. **开启 npm 发布用 2FA（必做，否则会 E403）**  
+   - 打开：<https://www.npmjs.com/settings/~account/two-factor-auth-login>  
+   - 选择 **Authorization and publishing**（或更高等级）  
+   - 用手机 Authenticator 绑定  
+
+   发布时终端会要求输入 6 位 OTP；或在命令前加：
+
+   ```powershell
+   $env:NPM_CONFIG_OTP="123456"   # 换成 Authenticator 当前验证码
+   pnpm release
+   ```
+
+4. **确认未把 publish 指到 npmmirror**  
+   若 `npm config get registry` 是 `npmmirror.com`，发布仍会失败。  
+   本仓库已在 `.npmrc` 中设置 `@gg-sync:registry=https://registry.npmjs.org/`。
+
+### 本地已准备的版本
+
+- 所有 `@gg-sync/*` 包版本：**1.0.0**（Changesets 已执行 `version-packages`）
+- 发布入口包：`@gg-sync/api-sync`
+
+### 发布命令
+
+在项目根目录：
 
 ```powershell
 cd d:\Project\gg-sync-api
-
-git remote add origin https://github.com/somedayyoung98-art/gg-sync-api.git
-# 若已添加过 origin，用：git remote set-url origin https://github.com/somedayyoung98-art/gg-sync-api.git
-
-git fetch origin
-git checkout -b main
-git pull origin main --allow-unrelated-histories
-# 若有冲突，保留双方文件后：
-git add -A
-git commit -m "chore: merge remote LICENSE with local monorepo"
-
-git push -u origin main
-```
-
-若你确认远程只有 LICENSE、不需要保留远程历史，也可（会覆盖远程）：
-
-```powershell
-git branch -M main
-git push -u origin main --force
-```
-
-推送后在 GitHub 上应能看到 `packages/`、`examples/`、`README.md` 等完整目录。
-
-## 2. 发布到 npm
-
-### 包名与 scope
-
-当前包名为 `@gg-sync/*`。发布前在本地检查是否已被占用：
-
-```bash
-npm view @gg-sync/api-sync
-```
-
-- 若 **404**：可尝试在 npm 创建组织 `@gg-sync` 后发布。
-- 若 **已有包 / 403**：需把 monorepo 内所有 `@gg-sync` 改成你有权限的 scope，例如 `@somedayyoung98-art/api-sync`（与 GitHub 用户名一致更易记）。
-
-消费者安装（scope 未改时）：
-
-```bash
-pnpm add -D @gg-sync/api-sync
-```
-
-### 首次发布步骤
-
-```powershell
-cd d:\Project\gg-sync-api
-pnpm install
-pnpm test
 pnpm build
-
-npm login
-npm whoami
-
-pnpm changeset
-# 选 bump 类型，第一次建议 minor 或 major → 1.0.0
-
-pnpm version-packages
-git add -A
-git commit -m "chore: version packages for v1.0.0"
-git push origin main
-
 pnpm release
 ```
 
-### 验证
+等价于 `pnpm build && changeset publish`，会按顺序发布 fixed 组内 8 个包。
 
-```bash
-npm view @gg-sync/api-sync
-mkdir test-install && cd test-install
+### 若 `pnpm release` 仍失败
+
+**404 + `@gg-sync`** → 未创建 npm 组织 `gg-sync`，回到上文第 2 步。
+
+**401 Unauthorized** → 执行 `npm login --registry=https://registry.npmjs.org`。
+
+**403 + Two-factor authentication ... required to publish** → 在 npm 账号开启 **Authorization and publishing** 2FA，发布时输入 OTP（见上文第 4 步）。
+
+**`TypeError: Cannot read properties of undefined (reading 'includes')`** → 多为 Changesets 在解析 npm 错误时的二次崩溃；先看上一条 **403/404** 的真实原因，按 2FA 或创建组织处理后再执行 `pnpm release`。
+
+**只想发入口包（不推荐）**  
+消费者依赖链需要 `@gg-sync/core` 等同时存在；应发布全部 8 个包。
+
+### 发布后验证
+
+```powershell
+npm view @gg-sync/api-sync version --registry=https://registry.npmjs.org
+```
+
+新建空目录测试：
+
+```powershell
+mkdir C:\temp\gg-sync-smoke
+cd C:\temp\gg-sync-smoke
 pnpm init
 pnpm add -D @gg-sync/api-sync
 npx sync-api --help
 ```
 
-### GitHub Release（可选）
+业务项目安装：
 
 ```bash
-git tag v1.0.0
-git push origin v1.0.0
+pnpm add -D @gg-sync/api-sync
 ```
 
-在 GitHub → Releases → Create release，选择 tag `v1.0.0`。
+### 之后发新版本
 
-## 3. npm 自动化（可选）
+```powershell
+pnpm changeset
+pnpm version-packages
+git add -A && git commit -m "chore: version packages"
+git push origin main
+pnpm release
+```
 
-在 GitHub 仓库 Settings → Secrets → Actions 添加 `NPM_TOKEN`（npm Access Token，Publish 权限），再配置 workflow 在 tag 推送时执行 `pnpm release`。
+### 无法使用 `@gg-sync` 组织时
 
-发布前请执行 `pnpm test && pnpm build`。
+若组织名已被占用，需要把整个 monorepo 的包名从 `@gg-sync/*` 改成你有权限的 scope（例如 `@你的npm用户名/*`），并更新 `dependencies` 与 `.changeset/config.json` 中的 fixed 列表。
+
+---
+
+发布前请执行：`pnpm test && pnpm build`
