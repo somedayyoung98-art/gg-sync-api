@@ -1,17 +1,38 @@
 {
   "name": "gg-sync-api",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Schema-driven frontend API sync platform (monorepo)",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "pnpm -r run build",
+    "test": "pnpm test:packages && pnpm test:e2e",
+    "test:workspace": "vitest run",
+    "test:packages": "pnpm -r run test",
+    "test:e2e": "vitest run --project e2e",
+    "lint": "echo \"lint pending\"",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "pnpm build && changeset publish",
+    "sync-api": "pnpm --filter @gg-sync/api-sync exec sync-api"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
+  "keywords": ["openapi", "api-sync", "codegen", "typescript", "monorepo"],
+  "author": "somedayyoung98-art",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/somedayyoung98-art/gg-sync-api.git"
+  },
+  "homepage": "https://github.com/somedayyoung98-art/gg-sync-api#readme",
+  "bugs": "https://github.com/somedayyoung98-art/gg-sync-api/issues",
+  "engines": {
+    "node": ">=20"
+  },
   "devDependencies": {
+    "@changesets/cli": "^2.28.0",
     "@types/node": "^25.9.1",
-    "typescript": "^6.0.3"
+    "tsup": "^8.4.0",
+    "typescript": "^6.0.3",
+    "vitest": "^3.0.9",
+    "zod": "^3.24.2"
   }
 }

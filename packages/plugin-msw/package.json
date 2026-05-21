@@ -1,0 +1,33 @@
+{
+  "name": "@gg-sync/plugin-msw",
+  "version": "0.0.0",
+  "description": "MSW mock generator plugin",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "peerDependencies": {
+    "msw": "^2.0.0"
+  },
+  "dependencies": {
+    "@gg-sync/core": "workspace:*",
+    "@gg-sync/generator-orval": "workspace:*"
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@gg-sync/core": "workspace:*",
+    "@gg-sync/generator-orval": "workspace:*",
+    "msw": "^2.0.0",
+    "tsup": "^8.4.0",
+    "typescript": "^6.0.3",
+    "vitest": "^3.0.9"
+  }
+}

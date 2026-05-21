@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# API sync cache & generated (consumer projects)
+.api-sync-cache/
+**/generated/
+
+# Logs & env
+*.log
+.env
+.env.*
+
+# Test & coverage
+coverage/
+
+# OS & IDE
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/
+
+# Changesets
+.changeset/*.md
+!.changeset/README.md
+!.changeset/config.json
+
+# Spec Kit / planning (local only — not pushed to GitHub)
+specs/
+.specify/
+.cursor/

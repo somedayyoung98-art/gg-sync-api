@@ -1,0 +1,29 @@
+{
+  "name": "@gg-sync/plugin-zod",
+  "version": "0.0.0",
+  "description": "Zod validation schema generator plugin",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "peerDependencies": {
+    "zod": "^3.24.0"
+  },
+  "dependencies": {
+    "@gg-sync/core": "workspace:*",
+    "@gg-sync/generator-orval": "workspace:*"
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run --passWithNoTests"
+  },
+  "devDependencies": {
+    "tsup": "^8.4.0",
+    "typescript": "^6.0.3"
+  }
+}

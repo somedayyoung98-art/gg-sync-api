@@ -1,0 +1,14 @@
+{
+  "name": "example-single-service",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sync-api": "sync-api run",
+    "sync-api:strict": "sync-api run --strict",
+    "sync-api:msw": "sync-api run --config ./api-sync.config.msw.example.ts",
+    "test:e2e": "sync-api run"
+  },
+  "devDependencies": {
+    "@gg-sync/api-sync": "workspace:*"
+  }
+}

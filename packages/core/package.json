@@ -1,0 +1,38 @@
+{
+  "name": "@gg-sync/core",
+  "version": "0.0.0",
+  "description": "API sync pipeline orchestrator",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@apidevtools/swagger-parser": "^10.1.1",
+    "jiti": "^2.4.2",
+    "openapi-diff": "^0.24.1",
+    "openapi-types": "^12.1.3",
+    "semver": "^7.7.1",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@gg-sync/generator-orval": "workspace:*",
+    "@types/node": "^25.9.1",
+    "tsup": "^8.4.0",
+    "typescript": "^6.0.3",
+    "vitest": "^3.0.9"
+  }
+}

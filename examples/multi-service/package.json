@@ -1,0 +1,13 @@
+{
+  "name": "example-multi-service",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sync-api": "sync-api run",
+    "sync-api:user": "sync-api run --namespace user",
+    "sync-api:billing": "sync-api run --namespace billing"
+  },
+  "devDependencies": {
+    "@gg-sync/api-sync": "workspace:*"
+  }
+}

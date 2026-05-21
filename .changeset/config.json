@@ -1,0 +1,22 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
+  "changelog": "@changesets/cli/changelog",
+  "commit": false,
+  "fixed": [
+    [
+      "@gg-sync/api-sync",
+      "@gg-sync/cli",
+      "@gg-sync/core",
+      "@gg-sync/generator-orval",
+      "@gg-sync/runtime",
+      "@gg-sync/plugin-msw",
+      "@gg-sync/plugin-react-query",
+      "@gg-sync/plugin-zod"
+    ]
+  ],
+  "linked": [],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": ["gg-sync-api", "example-single-service", "example-multi-service"]
+}

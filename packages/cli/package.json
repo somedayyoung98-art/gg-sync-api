@@ -1,0 +1,39 @@
+{
+  "name": "@gg-sync/cli",
+  "version": "0.0.0",
+  "description": "sync-api CLI",
+  "type": "module",
+  "bin": {
+    "sync-api": "./dist/index.js"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@gg-sync/core": "workspace:*",
+    "@gg-sync/generator-orval": "workspace:*",
+    "cac": "^6.7.14",
+    "ora": "^8.2.0",
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "@gg-sync/plugin-react-query": "workspace:*",
+    "@tanstack/react-query": "^5.0.0",
+    "@types/node": "^25.9.1",
+    "tsup": "^8.4.0",
+    "typescript": "^6.0.3",
+    "vitest": "^3.0.9"
+  }
+}
