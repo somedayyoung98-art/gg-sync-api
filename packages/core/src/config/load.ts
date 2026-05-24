@@ -47,7 +47,10 @@ export function resolveServiceConfig(
   return {
     namespace,
     input: service.input,
-    output: service.output,
+    output: {
+      ...service.output,
+      keepSpec: service.output.keepSpec ?? false,
+    },
     generators: service.generators ?? ['typescript', 'sdk'],
     compliance: { strict },
     runtime: { ...global.runtime, ...service.runtime },

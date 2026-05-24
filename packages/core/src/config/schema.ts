@@ -30,6 +30,8 @@ export const serviceConfigSchema = z
     output: z.object({
       dir: z.string().min(1),
       models: z.enum(['split', 'single']).optional(),
+      /** Keep `.api-sync-openapi.json` under output.dir after codegen (default: false). */
+      keepSpec: z.boolean().optional(),
     }),
     generators: z.array(generatorIdSchema).optional(),
     compliance: z

@@ -16,7 +16,10 @@ export interface OrvalBuildOutput {
   override?: Record<string, unknown>;
 }
 
-export function mapToOrvalConfig(ctx: PipelineContext): {
+export function mapToOrvalConfig(
+  ctx: PipelineContext,
+  specPath: string,
+): {
   input: OrvalBuildInput;
   output: OrvalBuildOutput;
 } {
@@ -28,8 +31,6 @@ export function mapToOrvalConfig(ctx: PipelineContext): {
   const artifactTarget = useReactQuery
     ? path.join(out, 'hooks.ts')
     : path.join(out, 'sdk.ts');
-
-  const tmpSpec = path.join(out, '.api-sync-openapi.json');
   const mutatorPath = path.join(ctx.cwd, 'src/api/runtime/client.ts');
 
   const override: Record<string, unknown> = {};
@@ -57,7 +58,7 @@ export function mapToOrvalConfig(ctx: PipelineContext): {
 
   return {
     input: {
-      target: tmpSpec,
+      target: specPath,
       workspace: ctx.cwd,
     },
     output: {

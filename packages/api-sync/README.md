@@ -73,6 +73,15 @@ pnpm sync-api run      # explicit
 
 First run creates `.api-sync-cache/<namespace>/latest-schema.json` (baseline). Later runs report contract changes.
 
+**OpenAPI files (two roles):**
+
+| File | Purpose | Commit? |
+|------|---------|---------|
+| `.api-sync-cache/<ns>/latest-schema.json` | Contract diff baseline for CI | Often yes (or seed in CI) |
+| `output/.api-sync-openapi.json` | Orval input snapshot | **No** — opt-in via `output.keepSpec: true` (default `false`) |
+
+In day-to-day work you only commit generated TS (or gitignore `generated/`). The pulled spec is ephemeral unless you explicitly keep it for debugging.
+
 ### 4. Use from the domain layer
 
 ```typescript

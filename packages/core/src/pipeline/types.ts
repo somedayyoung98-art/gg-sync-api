@@ -8,6 +8,8 @@ export interface ServiceConfig {
     dir: string;
     /** `split` = one file per schema under models/; `single` = one models.ts */
     models?: 'split' | 'single';
+    /** Persist pulled OpenAPI next to generated TS (default false). */
+    keepSpec?: boolean;
   };
   generators?: GeneratorId[];
   compliance?: { strict?: boolean };

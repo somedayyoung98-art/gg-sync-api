@@ -8,6 +8,7 @@ build/
 
 # API sync cache & generated (consumer projects)
 .api-sync-cache/
+**/.api-sync-openapi.json
 **/generated/
 **/generated-*/
 **/orval-test-*/
