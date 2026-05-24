@@ -3,12 +3,27 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "server": "tsx server/src/index.ts",
+    "openapi:dump": "node scripts/dump-openapi.mjs",
     "sync-api": "sync-api run",
+    "sync-api:url": "sync-api run --config ./api-sync.config.url.ts",
+    "sync-api:remote": "sync-api run --config ./api-sync.config.remote.ts",
     "sync-api:strict": "sync-api run --strict",
     "sync-api:msw": "sync-api run --config ./api-sync.config.msw.example.ts",
-    "test:e2e": "sync-api run"
+    "demo": "echo Copy .env.example to .env, then: (1) pnpm server  (2) pnpm sync-api:url — see README-DEMO.md"
   },
   "devDependencies": {
-    "@gg-sync/api-sync": "workspace:*"
+    "dotenv": "^16.4.7",
+    "@asteasolutions/zod-to-openapi": "^7.3.0",
+    "@gg-sync/api-sync": "workspace:*",
+    "@gg-sync/core": "workspace:*",
+    "@koa/router": "^13.1.0",
+    "@types/koa": "^2.15.0",
+    "@types/koa__router": "^12.0.4",
+    "koa": "^2.15.3",
+    "koa-body": "^6.0.1",
+    "openapi-types": "^12.1.3",
+    "tsx": "^4.19.3",
+    "zod": "^3.24.2"
   }
 }

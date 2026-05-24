@@ -7,6 +7,7 @@ import {
   runPipeline,
 } from '@gg-sync/core';
 import type { SharedCommandOptions } from '../options.js';
+import { resolveConfigPath } from '../resolve-config-path.js';
 import { resolveNamespaceFilter, resolveStrictFlag } from '../options.js';
 import { createDelayedSpinner, createSpinner, log } from '../ui/logger.js';
 
@@ -14,9 +15,7 @@ export async function diffCommand(
   options: SharedCommandOptions = {},
 ): Promise<number> {
   const cwd = options.cwd ? path.resolve(options.cwd) : process.cwd();
-  const configPath = options.config
-    ? path.resolve(cwd, options.config)
-    : path.join(cwd, 'api-sync.config.ts');
+  const configPath = resolveConfigPath(cwd, options);
 
   const spinner = createSpinner('Loading configuration');
 

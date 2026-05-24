@@ -2,18 +2,60 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Sample API",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "description": "Generated at runtime from Koa route + Zod schemas (examples/single-service/server)."
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Set OPENAPI_SERVER_URL in .env when running pnpm server"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "u_1"
+          },
+          "firstName": {
+            "type": "string",
+            "example": "Jane"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "avatarUrl": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "firstName",
+          "lastName"
+        ]
+      }
+    },
+    "parameters": {}
   },
   "paths": {
     "/users/{id}": {
       "get": {
         "operationId": "getUserById",
+        "summary": "Get user by id",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
+            "schema": {
+              "type": "string",
+              "example": "u_1"
+            },
             "required": true,
-            "schema": { "type": "string" }
+            "name": "id",
+            "in": "path"
           }
         ],
         "responses": {
@@ -27,20 +69,6 @@
               }
             }
           }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "User": {
-        "type": "object",
-        "required": ["id", "firstName", "lastName"],
-        "properties": {
-          "id": { "type": "string" },
-          "firstName": { "type": "string" },
-          "lastName": { "type": "string" },
-          "avatarUrl": { "type": "string", "nullable": true }
         }
       }
     }

@@ -7,9 +7,12 @@ import {
   runPipeline,
 } from '@gg-sync/core';
 import { createDelayedSpinner, createSpinner, log } from '../ui/logger.js';
+import { resolveConfigPath } from '../resolve-config-path.js';
 import { resolveNamespaceFilter, resolveStrictFlag } from '../options.js';
 
 export interface RunCommandOptions {
+  /** CLI `--config` (cac) */
+  config?: string;
   configPath?: string;
   strict?: boolean;
   cwd?: string;
@@ -18,9 +21,7 @@ export interface RunCommandOptions {
 
 export async function runCommand(options: RunCommandOptions = {}): Promise<number> {
   const cwd = options.cwd ? path.resolve(options.cwd) : process.cwd();
-  const configPath = options.configPath
-    ? path.resolve(cwd, options.configPath)
-    : path.join(cwd, 'api-sync.config.ts');
+  const configPath = resolveConfigPath(cwd, options);
 
   const spinner = createSpinner('Loading configuration');
 

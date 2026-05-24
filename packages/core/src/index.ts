@@ -44,6 +44,10 @@ export type { GeneratorPlugin } from './plugins/types.js';
 export { pullSchema } from './schema/puller.js';
 export { hashSchema } from './schema/hash.js';
 export {
+  normalizeOpenApiForTooling,
+  OPENAPI_TOOLING_VERSION,
+} from './schema/normalize-openapi.js';
+export {
   getCacheRoot,
   getNamespaceCacheDir,
   getBaselineSchemaPath,

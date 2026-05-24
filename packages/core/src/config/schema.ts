@@ -29,6 +29,7 @@ export const serviceConfigSchema = z
       }),
     output: z.object({
       dir: z.string().min(1),
+      models: z.enum(['split', 'single']).optional(),
     }),
     generators: z.array(generatorIdSchema).optional(),
     compliance: z

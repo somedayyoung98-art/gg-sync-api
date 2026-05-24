@@ -4,7 +4,11 @@ export type GeneratorId = 'typescript' | 'sdk' | 'react-query' | 'msw' | 'zod';
 
 export interface ServiceConfig {
   input: { url?: string; path?: string };
-  output: { dir: string };
+  output: {
+    dir: string;
+    /** `split` = one file per schema under models/; `single` = one models.ts */
+    models?: 'split' | 'single';
+  };
   generators?: GeneratorId[];
   compliance?: { strict?: boolean };
   runtime?: {

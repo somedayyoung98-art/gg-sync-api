@@ -4,6 +4,7 @@ import type { OpenAPIV3 } from 'openapi-types';
 import type { ResolvedServiceConfig } from '../pipeline/types.js';
 import type { APIContract } from '../pipeline/types.js';
 import { hashSchema } from './hash.js';
+import { normalizeOpenApiForTooling } from './normalize-openapi.js';
 
 export async function pullSchema(
   cwd: string,
@@ -20,7 +21,9 @@ export async function pullSchema(
     throw new Error(`Namespace "${config.namespace}": no input.url or input.path`);
   }
 
-  const bundled = (await SwaggerParser.bundle(parsed)) as OpenAPIV3.Document;
+  const bundled = normalizeOpenApiForTooling(
+    (await SwaggerParser.bundle(parsed)) as OpenAPIV3.Document,
+  );
   const bundledRaw = JSON.stringify(bundled);
 
   return {

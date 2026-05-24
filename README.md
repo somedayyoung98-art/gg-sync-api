@@ -27,7 +27,7 @@ packages/
   plugin-msw/
   plugin-zod/
 examples/
-  single-service/     # 单服务示例 + e2e
+  single-service/     # 单服务示例 + Koa 全链路演示（见 README-DEMO.md）+ e2e
   multi-service/      # 多 namespace 示例
 docs/
   publish-to-github-and-npm.md

@@ -9,11 +9,15 @@ build/
 # API sync cache & generated (consumer projects)
 .api-sync-cache/
 **/generated/
+**/generated-*/
+**/orval-test-*/
 
 # Logs & env
 *.log
 .env
 .env.*
+!.env.example
+**/fixtures/remote-api-docs.json
 
 # Test & coverage
 coverage/

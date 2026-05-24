@@ -3,6 +3,7 @@ import path from 'node:path';
 import { generate } from 'orval';
 import type { PipelineContext } from '@gg-sync/core';
 import { loadPluginsForGenerators } from '@gg-sync/core';
+import { consolidateModelsToSingleFile } from './consolidate-models.js';
 import { mapToOrvalConfig } from './map-config.js';
 
 export async function runOrvalGenerate(ctx: PipelineContext): Promise<void> {
@@ -22,4 +23,8 @@ export async function runOrvalGenerate(ctx: PipelineContext): Promise<void> {
     input: mapped.input,
     output: mapped.output,
   });
+
+  if (ctx.config.output.models === 'single') {
+    await consolidateModelsToSingleFile(ctx.meta.outputDir);
+  }
 }

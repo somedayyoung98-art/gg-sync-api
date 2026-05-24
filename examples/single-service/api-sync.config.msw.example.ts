@@ -1,3 +1,5 @@
+import './env.js';
+
 /**
  * Optional MSW mock generation example.
  *
@@ -14,7 +16,7 @@ export default {
       input: { path: './fixtures/openapi.json' },
       output: { dir: './src/api/generated' },
       generators: ['typescript', 'sdk', 'msw'],
-      runtime: { baseURL: 'http://localhost:3000' },
+      runtime: { baseURL: process.env.API_BASE_URL ?? 'http://localhost:3000' },
     },
   },
 };
