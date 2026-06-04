@@ -1,0 +1,47 @@
+{
+  "name": "@gg-sync/api-sync",
+  "version": "1.0.0",
+  "description": "Schema-driven API sync ? single install entry",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/somedayyoung98-art/gg-sync-api.git",
+    "directory": "packages/api-sync"
+  },
+  "homepage": "https://github.com/somedayyoung98-art/gg-sync-api/tree/main/packages/api-sync#readme",
+  "bugs": "https://github.com/somedayyoung98-art/gg-sync-api/issues",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "type": "module",
+  "bin": {
+    "sync-api": "bin/sync-api.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "bin",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "prepack": "npm run build"
+  },
+  "dependencies": {
+    "@gg-sync/cli": "^1.0.0",
+    "@gg-sync/core": "^1.0.0",
+    "@gg-sync/generator-orval": "^1.0.0",
+    "@gg-sync/runtime": "^1.0.0"
+  },
+  "optionalDependencies": {
+    "@gg-sync/plugin-msw": "^1.0.0",
+    "@gg-sync/plugin-react-query": "^1.0.0",
+    "@gg-sync/plugin-zod": "^1.0.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.4.0",
+    "typescript": "^6.0.3"
+  }
+}

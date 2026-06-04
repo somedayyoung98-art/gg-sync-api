@@ -1,0 +1,16 @@
+packages:
+  - 'packages/*'
+  - 'examples/*'
+
+# pnpm-only settings (kept out of .npmrc so npm does not warn)
+linkWorkspacePackages: deep
+preferWorkspacePackages: true
+autoInstallPeers: true
+strictDepBuilds: false
+
+onlyBuiltDependencies:
+  - esbuild
+  - msw
+allowBuilds:
+  esbuild: true
+  msw: set this to true or false

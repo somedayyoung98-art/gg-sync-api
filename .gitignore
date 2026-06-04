@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# API sync cache & generated (consumer projects)
+.api-sync-cache/
+**/.api-sync-openapi.json
+**/generated/
+**/generated-*/
+**/orval-test-*/
+
+# Logs & env
+*.log
+.env
+.env.*
+!.env.example
+**/fixtures/remote-api-docs.json
+
+# Test & coverage
+coverage/
+
+# OS & IDE
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/
+
+# Changesets
+.changeset/*.md
+!.changeset/README.md
+!.changeset/config.json
+
+# Spec Kit / planning (local only — not pushed to GitHub)
+specs/
+.specify/
+.cursor/

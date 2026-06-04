@@ -1,0 +1,38 @@
+{
+  "name": "@gg-sync/plugin-msw",
+  "version": "1.0.0",
+  "description": "MSW mock generator plugin",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "peerDependencies": {
+    "msw": "^2.0.0"
+  },
+  "dependencies": {
+    "@gg-sync/core": "^1.0.0",
+    "@gg-sync/generator-orval": "^1.0.0"
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@gg-sync/core": "^1.0.0",
+    "@gg-sync/generator-orval": "^1.0.0",
+    "msw": "^2.0.0",
+    "tsup": "^8.4.0",
+    "typescript": "^6.0.3",
+    "vitest": "^3.0.9"
+  }
+}

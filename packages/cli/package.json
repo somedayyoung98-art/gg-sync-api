@@ -1,0 +1,46 @@
+{
+  "name": "@gg-sync/cli",
+  "version": "1.0.0",
+  "description": "sync-api CLI",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "type": "module",
+  "bin": {
+    "sync-api": "./dist/index.js"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@gg-sync/core": "^1.0.0",
+    "@gg-sync/generator-orval": "^1.0.0",
+    "cac": "^6.7.14",
+    "ora": "^8.2.0",
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "@gg-sync/plugin-react-query": "^1.0.0",
+    "@tanstack/react-query": "^5.0.0",
+    "@types/node": "^25.9.1",
+    "tsup": "^8.4.0",
+    "typescript": "^6.0.3",
+    "vitest": "^3.0.9"
+  }
+}

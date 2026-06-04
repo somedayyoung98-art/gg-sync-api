@@ -1,0 +1,48 @@
+import fs from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import { generate } from 'orval';
+import type { PipelineContext, PluginLoadIssue } from '@gg-sync/core';
+import { loadPluginsForGenerators } from '@gg-sync/core';
+import { consolidateModelsToSingleFile } from './consolidate-models';
+import { mapToOrvalConfig } from './map-config';
+
+export async function runOrvalGenerate(ctx: PipelineContext): Promise<void> {
+  const loadIssues = await loadPluginsForGenerators(ctx.config.generators);
+  if (loadIssues.length > 0) {
+    const msg = loadIssues
+      .map((i: PluginLoadIssue) => `${i.packageName}: ${i.installHint}`)
+      .join('\n');
+    throw new Error(`Missing optional plugin packages:\n${msg}`);
+  }
+  await fs.mkdir(ctx.meta.outputDir, { recursive: true });
+
+  const keepSpec = ctx.config.output.keepSpec ?? false;
+  const specInOutput = path.join(ctx.meta.outputDir, '.api-sync-openapi.json');
+  const specPath = keepSpec
+    ? specInOutput
+    : path.join(os.tmpdir(), `api-sync-${ctx.namespace}-${ctx.contract.hash}.json`);
+
+  await fs.writeFile(specPath, ctx.contract.raw, 'utf-8');
+
+  try {
+    const mapped = mapToOrvalConfig(ctx, specPath);
+
+    await generate({
+      input: mapped.input,
+      output: mapped.output,
+    });
+
+    if (ctx.config.output.models === 'single') {
+      await consolidateModelsToSingleFile(ctx.meta.outputDir);
+    }
+  } finally {
+    if (!keepSpec) {
+      await fs.unlink(specPath).catch(() => undefined);
+    }
+  }
+
+  if (!keepSpec) {
+    await fs.unlink(specInOutput).catch(() => undefined);
+  }
+}

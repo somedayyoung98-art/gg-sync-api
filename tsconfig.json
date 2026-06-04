@@ -1,0 +1,15 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/core" },
+    { "path": "./packages/cli" },
+    { "path": "./packages/runtime" },
+    { "path": "./packages/generator-orval" },
+    { "path": "./packages/api-sync" },
+    { "path": "./packages/plugin-react-query" },
+    { "path": "./packages/plugin-msw" },
+    { "path": "./packages/plugin-zod" },
+    { "path": "./examples/single-service" },
+    { "path": "./examples/multi-service" }
+  ]
+}

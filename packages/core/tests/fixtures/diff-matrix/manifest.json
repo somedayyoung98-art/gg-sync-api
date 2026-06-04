@@ -1,0 +1,47 @@
+{
+  "baseline": "baseline.json",
+  "cases": [
+    {
+      "id": "delete-endpoint",
+      "file": "breaking/delete-endpoint.json",
+      "expectBreaking": true,
+      "matrixRow": "delete-endpoint"
+    },
+    {
+      "id": "change-method",
+      "file": "breaking/change-method.json",
+      "expectBreaking": true,
+      "matrixRow": "change-http-method"
+    },
+    {
+      "id": "optional-to-required",
+      "file": "breaking/optional-to-required.json",
+      "expectBreaking": true,
+      "matrixRow": "optional-property-becomes-required"
+    },
+    {
+      "id": "type-change",
+      "file": "breaking/type-change.json",
+      "expectBreaking": true,
+      "matrixRow": "property-type-change"
+    },
+    {
+      "id": "delete-property",
+      "file": "breaking/delete-property.json",
+      "expectBreaking": true,
+      "matrixRow": "delete-property"
+    },
+    {
+      "id": "required-to-optional",
+      "file": "non-breaking/required-to-optional.json",
+      "expectBreaking": false,
+      "matrixRow": "required-property-becomes-optional"
+    },
+    {
+      "id": "add-property",
+      "file": "non-breaking/add-property.json",
+      "expectBreaking": false,
+      "matrixRow": "add-property"
+    }
+  ]
+}
