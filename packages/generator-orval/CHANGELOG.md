@@ -1,5 +1,16 @@
 # @somedayyoung/generator-orval
 
+## 3.0.0
+
+### Major Changes
+
+- fix build
+
+### Patch Changes
+
+- Updated dependencies
+  - @somedayyoung/core@3.0.0
+
 ## 2.0.0
 
 ### Major Changes

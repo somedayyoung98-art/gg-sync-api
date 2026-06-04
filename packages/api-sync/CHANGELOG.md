@@ -1,5 +1,19 @@
 # @somedayyoung/api-sync
 
+## 3.0.0
+
+### Major Changes
+
+- fix build
+
+### Patch Changes
+
+- Updated dependencies
+  - @somedayyoung/cli@3.0.0
+  - @somedayyoung/core@3.0.0
+  - @somedayyoung/generator-orval@3.0.0
+  - @somedayyoung/runtime@3.0.0
+
 ## 2.0.0
 
 ### Major Changes

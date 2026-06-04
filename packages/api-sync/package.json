@@ -1,6 +1,6 @@
 {
   "name": "@somedayyoung/api-sync",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Schema-driven API sync ? single install entry",
   "license": "MIT",
   "repository": {
@@ -30,15 +30,15 @@
     "prepack": "npm run build"
   },
   "dependencies": {
-    "@somedayyoung/cli": "^2.0.0",
-    "@somedayyoung/core": "^2.0.0",
-    "@somedayyoung/generator-orval": "^2.0.0",
-    "@somedayyoung/runtime": "^2.0.0"
+    "@somedayyoung/cli": "^3.0.0",
+    "@somedayyoung/core": "^3.0.0",
+    "@somedayyoung/generator-orval": "^3.0.0",
+    "@somedayyoung/runtime": "^3.0.0"
   },
   "optionalDependencies": {
-    "@somedayyoung/plugin-msw": "^2.0.0",
-    "@somedayyoung/plugin-react-query": "^2.0.0",
-    "@somedayyoung/plugin-zod": "^2.0.0"
+    "@somedayyoung/plugin-msw": "^3.0.0",
+    "@somedayyoung/plugin-react-query": "^3.0.0",
+    "@somedayyoung/plugin-zod": "^3.0.0"
   },
   "devDependencies": {
     "tsup": "^8.4.0",

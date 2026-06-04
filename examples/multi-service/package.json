@@ -8,6 +8,6 @@
     "sync-api:billing": "sync-api run --namespace billing"
   },
   "devDependencies": {
-    "@somedayyoung/api-sync": "^2.0.0"
+    "@somedayyoung/api-sync": "^3.0.0"
   }
 }
