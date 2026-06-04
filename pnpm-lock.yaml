@@ -30,7 +30,7 @@ importers:
   examples/multi-service:
     devDependencies:
       '@somedayyoung/api-sync':
-        specifier: ^1.0.0
+        specifier: ^2.0.0
         version: link:../../packages/api-sync
 
   examples/single-service:
@@ -38,15 +38,15 @@ importers:
       '@asteasolutions/zod-to-openapi':
         specifier: ^7.3.0
         version: 7.3.0(zod@3.24.2)
-      '@somedayyoung/api-sync':
-        specifier: ^1.0.0
-        version: link:../../packages/api-sync
-      '@somedayyoung/core':
-        specifier: ^1.0.0
-        version: link:../../packages/core
       '@koa/router':
         specifier: ^13.1.0
         version: 13.1.0
+      '@somedayyoung/api-sync':
+        specifier: ^2.0.0
+        version: link:../../packages/api-sync
+      '@somedayyoung/core':
+        specifier: ^2.0.0
+        version: link:../../packages/core
       '@types/koa':
         specifier: ^2.15.0
         version: 2.15.2
@@ -75,16 +75,16 @@ importers:
   packages/api-sync:
     dependencies:
       '@somedayyoung/cli':
-        specifier: ^1.0.0
+        specifier: ^2.0.0
         version: link:../cli
       '@somedayyoung/core':
-        specifier: ^1.0.0
+        specifier: ^2.0.0
         version: link:../core
       '@somedayyoung/generator-orval':
-        specifier: ^1.0.0
+        specifier: ^2.0.0
         version: link:../generator-orval
       '@somedayyoung/runtime':
-        specifier: ^1.0.0
+        specifier: ^2.0.0
         version: link:../runtime
     devDependencies:
       tsup:
@@ -95,22 +95,22 @@ importers:
         version: 6.0.3
     optionalDependencies:
       '@somedayyoung/plugin-msw':
-        specifier: ^1.0.0
+        specifier: ^2.0.0
         version: link:../plugin-msw
       '@somedayyoung/plugin-react-query':
-        specifier: ^1.0.0
+        specifier: ^2.0.0
         version: link:../plugin-react-query
       '@somedayyoung/plugin-zod':
-        specifier: ^1.0.0
+        specifier: ^2.0.0
         version: link:../plugin-zod
 
   packages/cli:
     dependencies:
       '@somedayyoung/core':
-        specifier: ^1.0.0
+        specifier: ^2.0.0
         version: link:../core
       '@somedayyoung/generator-orval':
-        specifier: ^1.0.0
+        specifier: ^2.0.0
         version: link:../generator-orval
       cac:
         specifier: ^6.7.14
@@ -123,7 +123,7 @@ importers:
         version: 1.1.1
     devDependencies:
       '@somedayyoung/plugin-react-query':
-        specifier: ^1.0.0
+        specifier: ^2.0.0
         version: link:../plugin-react-query
       '@tanstack/react-query':
         specifier: ^5.0.0
@@ -163,7 +163,7 @@ importers:
         version: 3.24.2
     devDependencies:
       '@somedayyoung/generator-orval':
-        specifier: ^1.0.0
+        specifier: ^2.0.0
         version: link:../generator-orval
       '@types/node':
         specifier: ^25.9.1
@@ -184,7 +184,7 @@ importers:
   packages/generator-orval:
     dependencies:
       '@somedayyoung/core':
-        specifier: ^1.0.0
+        specifier: ^2.0.0
         version: link:../core
       orval:
         specifier: ^7.8.0
@@ -206,10 +206,10 @@ importers:
   packages/plugin-msw:
     dependencies:
       '@somedayyoung/core':
-        specifier: ^1.0.0
+        specifier: ^2.0.0
         version: link:../core
       '@somedayyoung/generator-orval':
-        specifier: ^1.0.0
+        specifier: ^2.0.0
         version: link:../generator-orval
     devDependencies:
       msw:
@@ -228,10 +228,10 @@ importers:
   packages/plugin-react-query:
     dependencies:
       '@somedayyoung/core':
-        specifier: ^1.0.0
+        specifier: ^2.0.0
         version: link:../core
       '@somedayyoung/generator-orval':
-        specifier: ^1.0.0
+        specifier: ^2.0.0
         version: link:../generator-orval
       '@tanstack/react-query':
         specifier: ^5.0.0
@@ -247,10 +247,10 @@ importers:
   packages/plugin-zod:
     dependencies:
       '@somedayyoung/core':
-        specifier: ^1.0.0
+        specifier: ^2.0.0
         version: link:../core
       '@somedayyoung/generator-orval':
-        specifier: ^1.0.0
+        specifier: ^2.0.0
         version: link:../generator-orval
       zod:
         specifier: ^3.24.0
