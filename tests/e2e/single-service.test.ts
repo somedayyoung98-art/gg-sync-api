@@ -19,7 +19,7 @@ beforeAll(() => {
 });
 
 describe('examples/single-service e2e', () => {
-  it('generates SDK and models via @gg-sync/api-sync', () => {
+  it('generates SDK and models via @somedayyoung/api-sync', () => {
     runSyncApi(['run']);
 
     const generated = path.join(exampleDir, 'src/api/generated');

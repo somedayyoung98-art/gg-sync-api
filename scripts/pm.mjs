@@ -34,7 +34,7 @@ export function runInAllWorkspaces(script) {
   run(`npm run ${script} --workspaces --if-present`);
 }
 
-/** Run a script in one workspace package by npm name (e.g. @gg-sync/core). */
+/** Run a script in one workspace package by npm name (e.g. @somedayyoung/core). */
 export function runInWorkspace(packageName, script) {
   const pm = detectPackageManager();
   if (pm === 'pnpm') {
@@ -48,7 +48,7 @@ export function runInWorkspace(packageName, script) {
   run(`npm run ${script} -w ${packageName}`);
 }
 
-/** exec a package binary from a workspace (e.g. sync-api in @gg-sync/api-sync). */
+/** exec a package binary from a workspace (e.g. sync-api in @somedayyoung/api-sync). */
 export function execInWorkspace(packageName, args) {
   const pm = detectPackageManager();
   const cmd = `${args.join(' ')}`;
@@ -98,7 +98,7 @@ if (isCli) {
         run('npx vitest run --project e2e');
         break;
       case 'exec-api-sync':
-        execInWorkspace('@gg-sync/api-sync', rest);
+        execInWorkspace('@somedayyoung/api-sync', rest);
         break;
       default:
         console.error(`Unknown command: ${command}`);

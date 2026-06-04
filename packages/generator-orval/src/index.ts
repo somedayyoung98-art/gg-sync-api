@@ -1,4 +1,4 @@
-import { register, type GeneratorPlugin, type PipelineContext } from '@gg-sync/core';
+import { register, type GeneratorPlugin, type PipelineContext } from '@somedayyoung/core';
 import { runOrvalGenerate } from './orval-bridge';
 
 const orvalRan = new WeakSet<PipelineContext>();

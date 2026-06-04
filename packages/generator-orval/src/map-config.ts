@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import type { PipelineContext } from '@gg-sync/core';
+import type { PipelineContext } from '@somedayyoung/core';
 
 export interface OrvalBuildInput {
   target: string;

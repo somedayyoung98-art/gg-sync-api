@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { afterEach, beforeAll, describe, expect, it } from 'vitest';
-import { writeBaseline } from '@gg-sync/core';
+import { writeBaseline } from '@somedayyoung/core';
 import { diffCommand } from '../../src/commands/diff';
 import { runCommand } from '../../src/commands/run';
 
@@ -44,7 +44,7 @@ describe('CLI exit codes (strict diff)', () => {
   });
 
   beforeAll(async () => {
-    await import('@gg-sync/generator-orval');
+    await import('@somedayyoung/generator-orval');
   });
 
   it('diff --strict exits 1 on breaking fixture', async () => {

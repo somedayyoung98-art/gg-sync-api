@@ -2,8 +2,8 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { generate } from 'orval';
-import type { PipelineContext, PluginLoadIssue } from '@gg-sync/core';
-import { loadPluginsForGenerators } from '@gg-sync/core';
+import type { PipelineContext, PluginLoadIssue } from '@somedayyoung/core';
+import { loadPluginsForGenerators } from '@somedayyoung/core';
 import { consolidateModelsToSingleFile } from './consolidate-models';
 import { mapToOrvalConfig } from './map-config';
 

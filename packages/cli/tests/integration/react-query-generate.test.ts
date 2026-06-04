@@ -1,5 +1,5 @@
-import '@gg-sync/generator-orval';
-import '@gg-sync/plugin-react-query';
+import '@somedayyoung/generator-orval';
+import '@somedayyoung/plugin-react-query';
 import { execSync } from 'node:child_process';
 import fs from 'node:fs/promises';
 import os from 'node:os';
@@ -41,7 +41,7 @@ describe('react-query generator', () => {
     await fs.mkdir(path.join(tmp, 'src/api/runtime'), { recursive: true });
     await fs.writeFile(
       path.join(tmp, 'src/api/runtime/client.ts'),
-      `export { createApiClient, customFetch } from '@gg-sync/runtime';\n`,
+      `export { createApiClient, customFetch } from '@somedayyoung/runtime';\n`,
       'utf8',
     );
 

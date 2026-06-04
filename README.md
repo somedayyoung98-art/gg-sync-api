@@ -2,7 +2,7 @@
 
 面向前端的 **Schema 驱动 API 同步** 平台：拉取 OpenAPI → 与基线 diff → 生成 TypeScript 类型与 SDK，可选 React Query / MSW / Zod。
 
-业务项目只需安装 **`@gg-sync/api-sync`**（npm 发布后即可；见下方「在业务项目中使用」）。
+业务项目只需安装 **`@somedayyoung/api-sync`**（npm 发布后即可；见下方「在业务项目中使用」）。
 
 **仓库：** [github.com/somedayyoung98-art/gg-sync-api](https://github.com/somedayyoung98-art/gg-sync-api)
 
@@ -46,10 +46,10 @@ docs/
 **npm 已发布后：**
 
 ```bash
-pnpm add -D @gg-sync/api-sync
+pnpm add -D @somedayyoung/api-sync
 ```
 
-**尚未发布时：** 在克隆的本仓库里用 workspace 联调，或在子包目录执行 `pnpm link --global` 后在业务项目 `pnpm link @gg-sync/api-sync`。
+**尚未发布时：** 在克隆的本仓库里用 workspace 联调，或在子包目录执行 `pnpm link --global` 后在业务项目 `pnpm link @somedayyoung/api-sync`。
 
 ### 配置（单服务 + 后端 URL）
 

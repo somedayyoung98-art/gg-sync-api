@@ -3,4 +3,4 @@ export {
   formatPeerCheckReport,
   type PeerCheckResult,
   type PeerIssue,
-} from '@gg-sync/core';
+} from '@somedayyoung/core';

@@ -124,7 +124,7 @@ export function formatPeerCheckReport(result: PeerCheckResult): string {
 
   for (const issue of result.peerIssues) {
     lines.push(
-      `✖ @gg-sync/plugin-${issue.generator} requires peer ${issue.packageName}@${issue.requiredRange} — install: ${issue.installHint}`,
+      `✖ @somedayyoung/plugin-${issue.generator} requires peer ${issue.packageName}@${issue.requiredRange} — install: ${issue.installHint}`,
     );
   }
 

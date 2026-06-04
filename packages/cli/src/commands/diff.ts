@@ -5,7 +5,7 @@ import {
   loadConfig,
   resolveAllServices,
   runPipeline,
-} from '@gg-sync/core';
+} from '@somedayyoung/core';
 import type { SharedCommandOptions } from '../options';
 import { resolveConfigPath } from '../resolve-config-path';
 import { resolveNamespaceFilter, resolveStrictFlag } from '../options';

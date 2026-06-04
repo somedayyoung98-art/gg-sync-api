@@ -11,7 +11,7 @@ export async function runGenerateStage(ctx: PipelineContext): Promise<PipelineCo
     const plugin = getGenerator(id);
     if (!plugin) {
       throw new Error(
-        `Generator "${id}" not registered. Install the matching @gg-sync/plugin-* package.`,
+        `Generator "${id}" not registered. Install the matching @somedayyoung/plugin-* package.`,
       );
     }
     await plugin.generate(ctx);

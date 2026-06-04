@@ -1,6 +1,6 @@
 {
-  "name": "@gg-sync/generator-orval",
-  "version": "1.0.0",
+  "name": "@somedayyoung/generator-orval",
+  "version": "2.0.0",
   "description": "Orval codegen bridge plugin",
   "license": "MIT",
   "publishConfig": {
@@ -22,11 +22,11 @@
     "dist"
   ],
   "scripts": {
-    "build": "node ../../scripts/build-workspace-dep.mjs @gg-sync/core build && tsup",
+    "build": "node ../../scripts/build-workspace-dep.mjs @somedayyoung/core build && tsup",
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
-    "@gg-sync/core": "^1.0.0",
+    "@somedayyoung/core": "^2.0.0",
     "orval": "^7.8.0"
   },
   "devDependencies": {

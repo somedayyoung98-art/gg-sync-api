@@ -8,7 +8,7 @@
 git push origin HEAD:main
 ```
 
-## 二、发布到 npm（@gg-sync/* v1.0.0）
+## 二、发布到 npm（@somedayyoung/* v1.0.0）
 
 ### 前提（必做）
 
@@ -17,7 +17,7 @@ git push origin HEAD:main
 
 2. **创建组织 `gg-sync`**（否则发布会 `404 Not Found`）  
    - 打开：<https://www.npmjs.com/org/create>  
-   - Organization name 填：**`gg-sync`**（与包名 `@gg-sync/...` 一致）  
+   - Organization name 填：**`gg-sync`**（与包名 `@somedayyoung/...` 一致）  
    - 选择 **Unlimited public packages**（免费公开包）  
    - 你的 npm 用户必须是该组织的 owner/member  
 
@@ -46,8 +46,8 @@ git push origin HEAD:main
 
 ### 本地已准备的版本
 
-- 所有 `@gg-sync/*` 包版本：**1.0.0**（Changesets 已执行 `version-packages`）
-- 发布入口包：`@gg-sync/api-sync`
+- 所有 `@somedayyoung/*` 包版本：**1.0.0**（Changesets 已执行 `version-packages`）
+- 发布入口包：`@somedayyoung/api-sync`
 
 ### 发布命令
 
@@ -72,12 +72,12 @@ pnpm release
 **`TypeError: Cannot read properties of undefined (reading 'includes')`** → 多为 Changesets 在解析 npm 错误时的二次崩溃；先看上一条 **403/404** 的真实原因，按 2FA 或创建组织处理后再执行 `pnpm release`。
 
 **只想发入口包（不推荐）**  
-消费者依赖链需要 `@gg-sync/core` 等同时存在；应发布全部 8 个包。
+消费者依赖链需要 `@somedayyoung/core` 等同时存在；应发布全部 8 个包。
 
 ### 发布后验证
 
 ```powershell
-npm view @gg-sync/api-sync version --registry=https://registry.npmjs.org
+npm view @somedayyoung/api-sync version --registry=https://registry.npmjs.org
 ```
 
 新建空目录测试：
@@ -86,14 +86,14 @@ npm view @gg-sync/api-sync version --registry=https://registry.npmjs.org
 mkdir C:\temp\gg-sync-smoke
 cd C:\temp\gg-sync-smoke
 pnpm init
-pnpm add -D @gg-sync/api-sync
+pnpm add -D @somedayyoung/api-sync
 npx sync-api --help
 ```
 
 业务项目安装：
 
 ```bash
-pnpm add -D @gg-sync/api-sync
+pnpm add -D @somedayyoung/api-sync
 ```
 
 ### 之后发新版本
@@ -108,7 +108,7 @@ pnpm release
 
 ### 无法使用 `@gg-sync` 组织时
 
-若组织名已被占用，需要把整个 monorepo 的包名从 `@gg-sync/*` 改成你有权限的 scope（例如 `@你的npm用户名/*`），并更新 `dependencies` 与 `.changeset/config.json` 中的 fixed 列表。
+若组织名已被占用，需要把整个 monorepo 的包名从 `@somedayyoung/*` 改成你有权限的 scope（例如 `@你的npm用户名/*`），并更新 `dependencies` 与 `.changeset/config.json` 中的 fixed 列表。
 
 ---
 

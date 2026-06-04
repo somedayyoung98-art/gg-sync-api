@@ -13,7 +13,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@gg-sync/core': path.join(repoRoot, 'packages/core/src/index.ts'),
+      '@somedayyoung/core': path.join(repoRoot, 'packages/core/src/index.ts'),
     },
   },
 });

@@ -1,6 +1,6 @@
 /**
- * Runtime HTTP client — re-export from @gg-sync/runtime.
+ * Runtime HTTP client — re-export from @somedayyoung/runtime.
  * Generated SDK functions accept `{ client }` from this module.
  */
-export { createApiClient, customFetch } from '@gg-sync/runtime';
-export type { ApiClient, CustomFetchConfig, Middleware } from '@gg-sync/runtime';
+export { createApiClient, customFetch } from '@somedayyoung/runtime';
+export type { ApiClient, CustomFetchConfig, Middleware } from '@somedayyoung/runtime';

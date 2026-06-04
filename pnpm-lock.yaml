@@ -29,7 +29,7 @@ importers:
 
   examples/multi-service:
     devDependencies:
-      '@gg-sync/api-sync':
+      '@somedayyoung/api-sync':
         specifier: ^1.0.0
         version: link:../../packages/api-sync
 
@@ -38,10 +38,10 @@ importers:
       '@asteasolutions/zod-to-openapi':
         specifier: ^7.3.0
         version: 7.3.0(zod@3.24.2)
-      '@gg-sync/api-sync':
+      '@somedayyoung/api-sync':
         specifier: ^1.0.0
         version: link:../../packages/api-sync
-      '@gg-sync/core':
+      '@somedayyoung/core':
         specifier: ^1.0.0
         version: link:../../packages/core
       '@koa/router':
@@ -74,16 +74,16 @@ importers:
 
   packages/api-sync:
     dependencies:
-      '@gg-sync/cli':
+      '@somedayyoung/cli':
         specifier: ^1.0.0
         version: link:../cli
-      '@gg-sync/core':
+      '@somedayyoung/core':
         specifier: ^1.0.0
         version: link:../core
-      '@gg-sync/generator-orval':
+      '@somedayyoung/generator-orval':
         specifier: ^1.0.0
         version: link:../generator-orval
-      '@gg-sync/runtime':
+      '@somedayyoung/runtime':
         specifier: ^1.0.0
         version: link:../runtime
     devDependencies:
@@ -94,22 +94,22 @@ importers:
         specifier: ^6.0.3
         version: 6.0.3
     optionalDependencies:
-      '@gg-sync/plugin-msw':
+      '@somedayyoung/plugin-msw':
         specifier: ^1.0.0
         version: link:../plugin-msw
-      '@gg-sync/plugin-react-query':
+      '@somedayyoung/plugin-react-query':
         specifier: ^1.0.0
         version: link:../plugin-react-query
-      '@gg-sync/plugin-zod':
+      '@somedayyoung/plugin-zod':
         specifier: ^1.0.0
         version: link:../plugin-zod
 
   packages/cli:
     dependencies:
-      '@gg-sync/core':
+      '@somedayyoung/core':
         specifier: ^1.0.0
         version: link:../core
-      '@gg-sync/generator-orval':
+      '@somedayyoung/generator-orval':
         specifier: ^1.0.0
         version: link:../generator-orval
       cac:
@@ -122,7 +122,7 @@ importers:
         specifier: ^1.1.1
         version: 1.1.1
     devDependencies:
-      '@gg-sync/plugin-react-query':
+      '@somedayyoung/plugin-react-query':
         specifier: ^1.0.0
         version: link:../plugin-react-query
       '@tanstack/react-query':
@@ -162,7 +162,7 @@ importers:
         specifier: ^3.24.2
         version: 3.24.2
     devDependencies:
-      '@gg-sync/generator-orval':
+      '@somedayyoung/generator-orval':
         specifier: ^1.0.0
         version: link:../generator-orval
       '@types/node':
@@ -183,7 +183,7 @@ importers:
 
   packages/generator-orval:
     dependencies:
-      '@gg-sync/core':
+      '@somedayyoung/core':
         specifier: ^1.0.0
         version: link:../core
       orval:
@@ -205,10 +205,10 @@ importers:
 
   packages/plugin-msw:
     dependencies:
-      '@gg-sync/core':
+      '@somedayyoung/core':
         specifier: ^1.0.0
         version: link:../core
-      '@gg-sync/generator-orval':
+      '@somedayyoung/generator-orval':
         specifier: ^1.0.0
         version: link:../generator-orval
     devDependencies:
@@ -227,10 +227,10 @@ importers:
 
   packages/plugin-react-query:
     dependencies:
-      '@gg-sync/core':
+      '@somedayyoung/core':
         specifier: ^1.0.0
         version: link:../core
-      '@gg-sync/generator-orval':
+      '@somedayyoung/generator-orval':
         specifier: ^1.0.0
         version: link:../generator-orval
       '@tanstack/react-query':
@@ -246,10 +246,10 @@ importers:
 
   packages/plugin-zod:
     dependencies:
-      '@gg-sync/core':
+      '@somedayyoung/core':
         specifier: ^1.0.0
         version: link:../core
-      '@gg-sync/generator-orval':
+      '@somedayyoung/generator-orval':
         specifier: ^1.0.0
         version: link:../generator-orval
       zod:

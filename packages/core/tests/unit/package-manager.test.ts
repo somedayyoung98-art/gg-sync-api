@@ -27,8 +27,8 @@ describe('package-manager hints', () => {
     expect(formatInstallHint('@tanstack/react-query')).toBe(
       'npm install @tanstack/react-query',
     );
-    expect(formatInstallHint('@gg-sync/plugin-msw', { dev: true })).toBe(
-      'npm install -D @gg-sync/plugin-msw',
+    expect(formatInstallHint('@somedayyoung/plugin-msw', { dev: true })).toBe(
+      'npm install -D @somedayyoung/plugin-msw',
     );
   });
 

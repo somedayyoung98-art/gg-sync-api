@@ -4,14 +4,14 @@
   "commit": false,
   "fixed": [
     [
-      "@gg-sync/api-sync",
-      "@gg-sync/cli",
-      "@gg-sync/core",
-      "@gg-sync/generator-orval",
-      "@gg-sync/runtime",
-      "@gg-sync/plugin-msw",
-      "@gg-sync/plugin-react-query",
-      "@gg-sync/plugin-zod"
+      "@somedayyoung/api-sync",
+      "@somedayyoung/cli",
+      "@somedayyoung/core",
+      "@somedayyoung/generator-orval",
+      "@somedayyoung/runtime",
+      "@somedayyoung/plugin-msw",
+      "@somedayyoung/plugin-react-query",
+      "@somedayyoung/plugin-zod"
     ]
   ],
   "linked": [],

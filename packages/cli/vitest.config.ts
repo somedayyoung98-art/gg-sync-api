@@ -7,12 +7,12 @@ const cliRoot = path.dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   resolve: {
     alias: {
-      '@gg-sync/core': path.join(cliRoot, '../core/src/index.ts'),
-      '@gg-sync/generator-orval': path.join(
+      '@somedayyoung/core': path.join(cliRoot, '../core/src/index.ts'),
+      '@somedayyoung/generator-orval': path.join(
         cliRoot,
         '../generator-orval/src/index.ts',
       ),
-      '@gg-sync/plugin-react-query': path.join(
+      '@somedayyoung/plugin-react-query': path.join(
         cliRoot,
         '../plugin-react-query/src/index.ts',
       ),

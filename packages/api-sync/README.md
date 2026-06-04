@@ -1,4 +1,4 @@
-# @gg-sync/api-sync
+# @somedayyoung/api-sync
 
 **Schema-driven API sync for frontend projects** — one npm install, full pipeline.
 
@@ -9,8 +9,8 @@ Fetch the latest OpenAPI contract, compare it to a cached baseline, regenerate T
 ## Install
 
 ```bash
-pnpm add -D @gg-sync/api-sync
-# or: npm i -D @gg-sync/api-sync
+pnpm add -D @somedayyoung/api-sync
+# or: npm i -D @somedayyoung/api-sync
 ```
 
 > Package is published to npm when maintainers run `pnpm release`. Until then, clone the [monorepo](https://github.com/somedayyoung98-art/gg-sync-api) and use `pnpm link` or workspace for local development.
@@ -257,15 +257,15 @@ Plugins ship as optional dependencies of this umbrella package; you only add the
 
 ## Runtime client & validation
 
-After scaffold, `src/api/runtime/client.ts` re-exports from `@gg-sync/runtime`:
+After scaffold, `src/api/runtime/client.ts` re-exports from `@somedayyoung/runtime`:
 
 ```typescript
-export { createApiClient, customFetch } from '@gg-sync/runtime';
+export { createApiClient, customFetch } from '@somedayyoung/runtime';
 ```
 
 When `client.ts` exists, the SDK generator wires Orval’s `customFetch` mutator for shared HTTP + optional response validation (log-only pass-through on mismatch — responses are never dropped).
 
-Configure sampling via client options (`validationRate` 0–1). See `@gg-sync/runtime` for `createApiClient` options.
+Configure sampling via client options (`validationRate` 0–1). See `@somedayyoung/runtime` for `createApiClient` options.
 
 ## Configuration reference
 
@@ -289,7 +289,7 @@ export default {
 Run `sync-api scaffold` so `src/api/runtime/client.ts` exists and exports `customFetch`:
 
 ```typescript
-export { createApiClient, customFetch } from '@gg-sync/runtime';
+export { createApiClient, customFetch } from '@somedayyoung/runtime';
 ```
 
 If you do not use the runtime mutator, remove or rename `client.ts` so generation skips the mutator path.
@@ -306,14 +306,14 @@ Ensure `.api-sync-cache/` is committed or seed the baseline in a non-strict run 
 
 | Package | Role |
 |---------|------|
-| `@gg-sync/api-sync` | **You install this** — `sync-api` binary |
-| `@gg-sync/core` | Pipeline (transitive) |
-| `@gg-sync/cli` | CLI implementation (transitive) |
-| `@gg-sync/generator-orval` | Orval bridge (transitive) |
-| `@gg-sync/runtime` | HTTP client + validation (transitive) |
-| `@gg-sync/plugin-*` | Optional generators (optional deps) |
+| `@somedayyoung/api-sync` | **You install this** — `sync-api` binary |
+| `@somedayyoung/core` | Pipeline (transitive) |
+| `@somedayyoung/cli` | CLI implementation (transitive) |
+| `@somedayyoung/generator-orval` | Orval bridge (transitive) |
+| `@somedayyoung/runtime` | HTTP client + validation (transitive) |
+| `@somedayyoung/plugin-*` | Optional generators (optional deps) |
 
-Do not install internal `@gg-sync/*` packages directly unless you are extending the platform.
+Do not install internal `@somedayyoung/*` packages directly unless you are extending the platform.
 
 ## Examples (platform repo)
 

@@ -1,5 +1,5 @@
 import { cac } from 'cac';
-import '@gg-sync/generator-orval';
+import '@somedayyoung/generator-orval';
 import { runCommand } from './commands/run';
 import { diffCommand } from './commands/diff';
 import { scaffoldCommand } from './commands/scaffold';

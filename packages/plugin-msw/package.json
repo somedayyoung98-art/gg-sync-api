@@ -1,6 +1,6 @@
 {
-  "name": "@gg-sync/plugin-msw",
-  "version": "1.0.0",
+  "name": "@somedayyoung/plugin-msw",
+  "version": "2.0.0",
   "description": "MSW mock generator plugin",
   "license": "MIT",
   "publishConfig": {
@@ -20,16 +20,16 @@
     "msw": "^2.0.0"
   },
   "dependencies": {
-    "@gg-sync/core": "^1.0.0",
-    "@gg-sync/generator-orval": "^1.0.0"
+    "@somedayyoung/core": "^2.0.0",
+    "@somedayyoung/generator-orval": "^2.0.0"
   },
   "scripts": {
     "build": "tsup",
     "test": "vitest run"
   },
   "devDependencies": {
-    "@gg-sync/core": "^1.0.0",
-    "@gg-sync/generator-orval": "^1.0.0",
+    "@somedayyoung/core": "^2.0.0",
+    "@somedayyoung/generator-orval": "^2.0.0",
     "msw": "^2.0.0",
     "tsup": "^8.4.0",
     "typescript": "^6.0.3",

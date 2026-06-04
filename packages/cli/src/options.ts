@@ -2,7 +2,7 @@ import {
   filterServicesByNamespace,
   listNamespaceIds,
   type ResolvedServiceConfig,
-} from '@gg-sync/core';
+} from '@somedayyoung/core';
 
 export interface SharedCommandOptions {
   config?: string;

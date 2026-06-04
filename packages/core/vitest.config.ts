@@ -7,8 +7,8 @@ const coreRoot = path.dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   resolve: {
     alias: {
-      '@gg-sync/core': path.join(coreRoot, 'src/index.ts'),
-      '@gg-sync/generator-orval': path.join(
+      '@somedayyoung/core': path.join(coreRoot, 'src/index.ts'),
+      '@somedayyoung/generator-orval': path.join(
         coreRoot,
         '../generator-orval/src/index.ts',
       ),

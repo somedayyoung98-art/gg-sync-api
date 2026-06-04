@@ -1,9 +1,9 @@
-import '@gg-sync/plugin-react-query';
+import '@somedayyoung/plugin-react-query';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import '@gg-sync/generator-orval';
+import '@somedayyoung/generator-orval';
 import { doctorCommand } from '../../src/commands/doctor';
 import { runCommand } from '../../src/commands/run';
 

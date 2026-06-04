@@ -1,6 +1,6 @@
 {
-  "name": "@gg-sync/core",
-  "version": "1.0.0",
+  "name": "@somedayyoung/core",
+  "version": "2.0.0",
   "description": "API sync pipeline orchestrator",
   "license": "MIT",
   "publishConfig": {
@@ -34,7 +34,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@gg-sync/generator-orval": "^1.0.0",
+    "@somedayyoung/generator-orval": "^2.0.0",
     "@types/node": "^25.9.1",
     "@types/semver": "^7.5.8",
     "tsup": "^8.4.0",

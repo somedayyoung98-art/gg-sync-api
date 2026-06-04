@@ -1,5 +1,5 @@
-import { register, type GeneratorPlugin } from '@gg-sync/core';
-import { runOrvalGenerate } from '@gg-sync/generator-orval';
+import { register, type GeneratorPlugin } from '@somedayyoung/core';
+import { runOrvalGenerate } from '@somedayyoung/generator-orval';
 
 const reactQueryPlugin: GeneratorPlugin = {
   id: 'react-query',

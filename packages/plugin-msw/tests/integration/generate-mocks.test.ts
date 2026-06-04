@@ -1,11 +1,11 @@
-import '@gg-sync/generator-orval';
-import '@gg-sync/plugin-msw';
+import '@somedayyoung/generator-orval';
+import '@somedayyoung/plugin-msw';
 import { execSync } from 'node:child_process';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { runPipeline, loadConfig, resolveAllServices } from '@gg-sync/core';
+import { runPipeline, loadConfig, resolveAllServices } from '@somedayyoung/core';
 
 const fixturesRoot = path.resolve(
   import.meta.dirname,

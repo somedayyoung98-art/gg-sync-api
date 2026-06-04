@@ -1,6 +1,6 @@
 {
-  "name": "@gg-sync/cli",
-  "version": "1.0.0",
+  "name": "@somedayyoung/cli",
+  "version": "2.0.0",
   "description": "sync-api CLI",
   "license": "MIT",
   "publishConfig": {
@@ -29,14 +29,14 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@gg-sync/core": "^1.0.0",
-    "@gg-sync/generator-orval": "^1.0.0",
+    "@somedayyoung/core": "^2.0.0",
+    "@somedayyoung/generator-orval": "^2.0.0",
     "cac": "^6.7.14",
     "ora": "^8.2.0",
     "picocolors": "^1.1.1"
   },
   "devDependencies": {
-    "@gg-sync/plugin-react-query": "^1.0.0",
+    "@somedayyoung/plugin-react-query": "^2.0.0",
     "@tanstack/react-query": "^5.0.0",
     "@types/node": "^25.9.1",
     "tsup": "^8.4.0",

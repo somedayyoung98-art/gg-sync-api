@@ -6,7 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import dotenv from 'dotenv';
-import { normalizeOpenApiForTooling } from '@gg-sync/core';
+import { normalizeOpenApiForTooling } from '@somedayyoung/core';
 
 const exampleRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 dotenv.config({ path: path.join(exampleRoot, '.env') });

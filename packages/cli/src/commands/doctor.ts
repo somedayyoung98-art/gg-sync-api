@@ -4,7 +4,7 @@ import {
   loadConfig,
   resolveAllServices,
   runDoctorStage,
-} from '@gg-sync/core';
+} from '@somedayyoung/core';
 import { createDelayedSpinner, log } from '../ui/logger';
 
 export interface DoctorCommandOptions {

@@ -36,7 +36,7 @@ describe('sync-api scaffold', () => {
     expect(domain).toMatch(/DO NOT import from `..\/generated\//);
 
     const client = await fs.readFile(path.join(apiRoot, 'runtime/client.ts'), 'utf8');
-    expect(client).toContain('@gg-sync/runtime');
+    expect(client).toContain('@somedayyoung/runtime');
   });
 
   it('skips existing files without --force', async () => {
@@ -66,7 +66,7 @@ describe('sync-api scaffold', () => {
     expect(domain).toContain('custom facade');
 
     const client = await fs.readFile(emptyRuntime, 'utf8');
-    expect(client).toContain('@gg-sync/runtime');
+    expect(client).toContain('@somedayyoung/runtime');
   });
 
   it('scaffoldCommand returns 0 on success', async () => {

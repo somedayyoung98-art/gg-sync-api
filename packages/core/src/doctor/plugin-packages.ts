@@ -3,9 +3,9 @@ import type { GeneratorId } from '../pipeline/types';
 export const PLUGIN_GENERATOR_IDS: GeneratorId[] = ['react-query', 'msw', 'zod'];
 
 export const PLUGIN_PACKAGE_BY_GENERATOR: Partial<Record<GeneratorId, string>> = {
-  'react-query': '@gg-sync/plugin-react-query',
-  msw: '@gg-sync/plugin-msw',
-  zod: '@gg-sync/plugin-zod',
+  'react-query': '@somedayyoung/plugin-react-query',
+  msw: '@somedayyoung/plugin-msw',
+  zod: '@somedayyoung/plugin-zod',
 };
 
 /** Fallback peers when plugin package is not loaded yet. */

@@ -5,7 +5,7 @@
 
 | 项目 | 内容 |
 |------|------|
-| 产品 | `@gg-sync/api-sync` — 基于 OpenAPI 的前端 API 同步工具 |
+| 产品 | `@somedayyoung/api-sync` — 基于 OpenAPI 的前端 API 同步工具 |
 | 版本 | 1.0.0 |
 | 报告日期 | 2026-05-21 |
 | 执行环境 | Windows 10，Node.js v22.22.0，pnpm 11.1.3 |
@@ -195,7 +195,7 @@ services: {
 | 读取 `input.path` | `packages/core/src/schema/puller.ts` | FT-001、FT-003 |
 | 读取 `input.url` | 同上（`SwaggerParser.parse(url)`） | FT-002 |
 | Bundle / 哈希 | `puller.ts` + cache 阶段 | FT-001–003 |
-| 生成 TS 类型 | `@gg-sync/generator-orval` → Orval `schemas: …/models` | 全部 FT |
+| 生成 TS 类型 | `@somedayyoung/generator-orval` → Orval `schemas: …/models` | 全部 FT |
 | CLI 入口 | `sync-api run` | FT-001–003、E2E |
 
 ---
@@ -212,7 +212,7 @@ services: {
 当同时满足：
 
 1. 存在 `src/api/runtime/client.ts`；
-2. 使用 `export { customFetch } from '@gg-sync/runtime'` 这类**再导出**；
+2. 使用 `export { customFetch } from '@somedayyoung/runtime'` 这类**再导出**；
 3. `generators` 包含 `sdk`；
 
 Orval 可能报错：`Your mutator file doesn't have the customFetch exported function`，导致 **models/sdk 未更新**，但 CLI 仍可能打印 `API Sync completed successfully`（**退出码 0**）。
