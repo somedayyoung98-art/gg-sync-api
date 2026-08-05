@@ -1,9 +1,5 @@
-import fs from 'node:fs';
 import path from 'node:path';
-import { initSync, parse } from 'es-module-lexer';
 import type { GeneratorId, PipelineContext } from '@somedayyoung/core';
-
-initSync();
 
 export interface OrvalBuildInput {
   target: string;
@@ -13,7 +9,7 @@ export interface OrvalBuildInput {
 export interface OrvalBuildOutput {
   target: string;
   schemas?: string;
-  client: 'fetch' | 'react-query' | 'zod' | 'axios';
+  client: 'fetch' | 'react-query' | 'zod' | 'axios-functions';
   httpClient?: 'fetch' | 'axios';
   baseUrl?: string;
   mode: 'single' | 'split' | 'tags';
@@ -22,16 +18,8 @@ export interface OrvalBuildOutput {
 }
 
 export interface OrvalGenerationPass {
-  client: 'fetch' | 'react-query' | 'zod';
+  client: 'fetch' | 'react-query' | 'zod' | 'axios-functions';
   includeExtras: boolean;
-}
-
-function hasLocalCustomFetch(mutatorPath: string): boolean {
-  if (!fs.existsSync(mutatorPath)) return false;
-  const [, exports] = parse(fs.readFileSync(mutatorPath, 'utf8'));
-  return exports.some(
-    ({ n, ln }) => n === 'customFetch' && ln === 'customFetch',
-  );
 }
 
 export function createOrvalGenerationPasses(
@@ -41,7 +29,10 @@ export function createOrvalGenerationPasses(
   const passes: OrvalGenerationPass[] = [];
 
   if (enabled.has('sdk') || !enabled.has('react-query')) {
-    passes.push({ client: 'fetch', includeExtras: true });
+    passes.push({
+      client: enabled.has('sdk') ? 'axios-functions' : 'fetch',
+      includeExtras: true,
+    });
   }
   if (enabled.has('react-query')) {
     passes.push({
@@ -68,15 +59,23 @@ export function mapToOrvalConfig(
   const generators = new Set(ctx.config.generators);
 
   const selectedClient =
-    pass?.client ?? (generators.has('react-query') ? 'react-query' : 'fetch');
+    pass?.client ??
+    (generators.has('react-query')
+      ? 'react-query'
+      : generators.has('sdk')
+        ? 'axios-functions'
+        : 'fetch');
   const useReactQuery = selectedClient === 'react-query';
   const useZod = selectedClient === 'zod';
+  const useSdk = selectedClient === 'axios-functions';
   const includeExtras = pass?.includeExtras ?? true;
   const client: OrvalBuildOutput['client'] = useZod
     ? 'zod'
     : useReactQuery
       ? 'react-query'
-      : 'fetch';
+      : useSdk
+        ? 'axios-functions'
+        : 'fetch';
   const artifactTarget = useZod
     ? path.join(out, 'zod.ts')
     : useReactQuery
@@ -92,13 +91,13 @@ export function mapToOrvalConfig(
           path.dirname(modelsFile.file),
           path.basename(modelsFile.file, '.ts'),
         );
-  const mutatorPath = path.join(ctx.cwd, 'src/api/runtime/client.ts');
+  const mutatorPath = path.join(ctx.outputDir, 'sdk-request.ts');
 
   const override: Record<string, unknown> = {};
-  if (!useZod) {
+  if (!useZod && !useSdk) {
     override.fetch = { includeHttpResponseReturnType: false };
   }
-  if (selectedClient === 'fetch' && hasLocalCustomFetch(mutatorPath)) {
+  if (useSdk) {
     override.mutator = {
       path: mutatorPath,
       name: 'customFetch',

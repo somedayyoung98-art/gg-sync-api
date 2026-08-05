@@ -1,5 +1,9 @@
 import Router from '@koa/router';
-import { CreateProductSchema, type Product } from '../schemas/product';
+import {
+  CreateProductSchema,
+  DeleteProductParamsSchema,
+  type Product,
+} from '../schemas/product';
 
 export const productsRouter = new Router();
 
@@ -15,4 +19,9 @@ productsRouter.post('/products', (ctx) => {
   };
   ctx.status = 201;
   ctx.body = body;
+});
+
+productsRouter.delete('/products/:id', (ctx) => {
+  DeleteProductParamsSchema.parse(ctx.params);
+  ctx.status = 204;
 });

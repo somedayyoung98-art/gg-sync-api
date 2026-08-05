@@ -13,3 +13,17 @@ export type {
   ModelsOutput,
   ServiceConfig,
 } from '@somedayyoung/core';
+export {
+  createApiClient,
+  customFetch,
+  extendUmiRequest,
+  umiRequest,
+} from '@somedayyoung/runtime';
+export type {
+  ApiClient,
+  CreateApiClientOptions,
+  CustomFetchConfig,
+  CustomFetchOptions,
+  Middleware,
+  RequestOptionsInit,
+} from '@somedayyoung/runtime';

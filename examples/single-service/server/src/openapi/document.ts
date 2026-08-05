@@ -1,7 +1,11 @@
 import { getOpenApiServerUrl } from '../../../env';
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi';
 import type { OpenAPIV3 } from 'openapi-types';
-import { CreateProductSchema, ProductSchema } from '../schemas/product';
+import {
+  CreateProductSchema,
+  DeleteProductParamsSchema,
+  ProductSchema,
+} from '../schemas/product';
 import { GetUserParamsSchema, UserSchema } from '../schemas/user';
 
 const registry = new OpenAPIRegistry();
@@ -14,6 +18,7 @@ registry.registerPath({
   method: 'get',
   path: '/users/{id}',
   operationId: 'getUserById',
+  tags: ['User'],
   summary: 'Get user by id',
   request: { params: GetUserParamsSchema },
   responses: {
@@ -32,6 +37,7 @@ registry.registerPath({
   method: 'post',
   path: '/products',
   operationId: 'createProduct',
+  tags: ['Product'],
   summary: 'Create a product',
   request: {
     body: {
@@ -51,6 +57,18 @@ registry.registerPath({
         },
       },
     },
+  },
+});
+
+registry.registerPath({
+  method: 'delete',
+  path: '/products/{id}',
+  operationId: 'deleteProduct',
+  tags: ['Product'],
+  summary: 'Delete a product',
+  request: { params: DeleteProductParamsSchema },
+  responses: {
+    204: { description: 'Deleted' },
   },
 });
 

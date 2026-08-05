@@ -65,6 +65,7 @@ describe.sequential('examples/single-service config matrix', () => {
         keepSpec: false,
       },
       generators: ['typescript', 'sdk'],
+      sdk: { businessApi: true },
       compliance: { strict: false },
     });
 
@@ -74,6 +75,9 @@ describe.sequential('examples/single-service config matrix', () => {
     const output = path.join(exampleDir, 'src/api/generated');
     expect(fs.existsSync(path.join(output, 'models/index.ts'))).toBe(true);
     expect(fs.existsSync(path.join(output, 'sdk.ts'))).toBe(true);
+    expect(fs.readFileSync(path.join(output, 'sdk.ts'), 'utf8')).toContain(
+      'export const userApi',
+    );
     expect(fs.existsSync(path.join(output, '.api-sync-openapi.json'))).toBe(false);
     expect(
       fs.existsSync(path.join(exampleDir, '.api-sync-cache/main/latest-schema.json')),
@@ -90,6 +94,7 @@ describe.sequential('examples/single-service config matrix', () => {
     expect(fs.existsSync(path.join(output, 'models.ts'))).toBe(true);
     expect(fs.existsSync(path.join(output, 'models'))).toBe(false);
     expect(fs.existsSync(path.join(output, '.api-sync-openapi.json'))).toBe(true);
+    expect(fs.readFileSync(sdkPath, 'utf8')).not.toContain('userApi');
     expect(() => checkFormatting(sdkPath)).not.toThrow();
   });
 
@@ -100,7 +105,12 @@ describe.sequential('examples/single-service config matrix', () => {
     const output = path.join(exampleDir, 'src/api/generated-custom');
     const typePath = path.join(output, 'contracts/type.ts');
     expect(fs.existsSync(typePath)).toBe(true);
-    expect(fs.readFileSync(typePath, 'utf8')).toContain('export type User');
+    const typeSource = fs.readFileSync(typePath, 'utf8');
+    expect(typeSource).toContain('interface User');
+    expect(typeSource).toMatch(/export type \{[^}]*User[^}]*\}/s);
+    expect(typeSource).not.toMatch(
+      /(?:interface|type) (?:paths|webhooks|components|operations)\b/,
+    );
     expect(fs.existsSync(path.join(output, 'sdk.ts'))).toBe(false);
     expect(fs.existsSync(path.join(output, 'hooks.ts'))).toBe(false);
     expect(fs.existsSync(path.join(output, 'zod.ts'))).toBe(false);

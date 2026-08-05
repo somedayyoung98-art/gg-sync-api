@@ -15,6 +15,10 @@ export const CreateProductSchema = z
 
 export type CreateProductRequest = z.infer<typeof CreateProductSchema>;
 
+export const DeleteProductParamsSchema = z.object({
+  id: z.string().openapi({ example: 'p_42' }),
+});
+
 /** POST 成功后的响应体 */
 export const ProductSchema = z
   .object({

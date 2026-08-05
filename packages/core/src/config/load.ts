@@ -60,6 +60,7 @@ export function resolveServiceConfig(
       keepSpec: service.output.keepSpec ?? false,
     },
     generators: service.generators ?? ['typescript', 'sdk'],
+    sdk: service.sdk,
     compliance: { strict },
     runtime: { ...global.runtime, ...service.runtime },
   };

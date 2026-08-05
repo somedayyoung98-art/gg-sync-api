@@ -174,7 +174,11 @@ export default defineConfig({
     await expect(
       fs.stat(path.join(root, '.api-sync-cache/main/latest-schema.json')),
     ).resolves.toBeDefined();
-    expect(typeSource).toContain('export type Item');
+    expect(typeSource).toContain('interface Item');
+    expect(typeSource).toMatch(/export type \{[^}]*Item[^}]*\}/s);
+    expect(typeSource).not.toMatch(
+      /(?:interface|type) (?:paths|webhooks|components|operations)\b/,
+    );
 
     await fs.writeFile(
       path.join(root, 'consumer.ts'),

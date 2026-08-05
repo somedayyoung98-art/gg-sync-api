@@ -1,6 +1,6 @@
 {
   "name": "@somedayyoung/generator-orval",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Orval codegen bridge plugin",
   "license": "MIT",
   "publishConfig": {
@@ -26,10 +26,11 @@
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
-    "@somedayyoung/core": "^3.0.2",
-    "es-module-lexer": "^1.7.0",
-    "openapi-typescript": "^7.13.0",
+    "@orval/core": "^7.21.0",
+    "@somedayyoung/core": "^3.0.3",
     "orval": "^7.8.0",
+    "rollup": "^4.62.4",
+    "rollup-plugin-dts": "^6.5.1",
     "typescript": "^5.9.3"
   },
   "engines": {

@@ -12,72 +12,67 @@ describe('single models generation', () => {
     if (tmp) await fs.rm(tmp, { recursive: true, force: true });
   });
 
-  it('uses openapi-typescript root types', async () => {
+  it('bundles the complete Orval model surface without OpenAPI containers', async () => {
     tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'api-sync-models-'));
-    await fs.mkdir(path.join(tmp, 'type'));
-    const specPath = path.join(tmp, 'openapi.json');
+    const modelsDir = path.join(tmp, 'type');
+    await fs.mkdir(modelsDir);
     await fs.writeFile(
-      specPath,
-      JSON.stringify({
-        openapi: '3.0.3',
-        info: { title: 'Types', version: '1.0.0' },
-        paths: {},
-        components: {
-          schemas: {
-            Item: {
-              type: 'object',
-              required: ['id'],
-              properties: { id: { type: 'string' } },
-            },
-          },
-        },
-      }),
+      path.join(modelsDir, 'item.ts'),
+      'export interface Item { id: string }\n',
+      'utf8',
+    );
+    await fs.writeFile(
+      path.join(modelsDir, 'createItemBody.ts'),
+      'export interface CreateItemBody { name: string }\n',
+      'utf8',
+    );
+    await fs.writeFile(
+      path.join(modelsDir, 'createItemResponse.ts'),
+      `import type { Item } from './item';\nexport type CreateItemResponse = Item;\n`,
+      'utf8',
+    );
+    await fs.writeFile(
+      path.join(modelsDir, 'index.ts'),
+      `export * from './item';\nexport * from './createItemBody';\nexport * from './createItemResponse';\n`,
       'utf8',
     );
     const context = { outputDir: tmp } as PipelineContext;
 
-    await generateSingleModels(context, specPath, 'type.ts');
+    await generateSingleModels(context, 'type.ts');
 
     const source = await fs.readFile(path.join(tmp, 'type.ts'), 'utf8');
-    expect(source).toContain('export type Item');
+    expect(source).toContain('interface Item');
+    expect(source).toContain('interface CreateItemBody');
+    expect(source).toContain('type CreateItemResponse = Item');
+    expect(source).toMatch(/export type \{[^}]*Item[^}]*\}/s);
     expect(source).toMatch(/id:\s*string/);
+    expect(source).not.toMatch(
+      /export (?:interface|type) (?:paths|webhooks|components|operations)\b/,
+    );
     await expect(fs.stat(path.join(tmp, 'type'))).rejects.toThrow();
   });
 
-  it('generates a recursive model without dereferencing the cycle', async () => {
+  it('preserves recursive model references', async () => {
     tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'api-sync-models-'));
-    const specPath = path.join(tmp, 'openapi.json');
+    const modelsDir = path.join(tmp, 'type');
+    await fs.mkdir(modelsDir);
     await fs.writeFile(
-      specPath,
-      JSON.stringify({
-        openapi: '3.0.3',
-        info: { title: 'Recursive types', version: '1.0.0' },
-        paths: {},
-        components: {
-          schemas: {
-            TreeNode: {
-              type: 'object',
-              required: ['children'],
-              properties: {
-                children: {
-                  type: 'array',
-                  items: { $ref: '#/components/schemas/TreeNode' },
-                },
-              },
-            },
-          },
-        },
-      }),
+      path.join(modelsDir, 'treeNode.ts'),
+      'export interface TreeNode { children: TreeNode[] }\n',
+      'utf8',
+    );
+    await fs.writeFile(
+      path.join(modelsDir, 'index.ts'),
+      `export * from './treeNode';\n`,
       'utf8',
     );
 
     await generateSingleModels(
       { outputDir: tmp } as PipelineContext,
-      specPath,
       'type.ts',
     );
 
     const source = await fs.readFile(path.join(tmp, 'type.ts'), 'utf8');
-    expect(source).toContain('components["schemas"]["TreeNode"][]');
+    expect(source).toMatch(/children:\s*TreeNode\[\]/);
   });
 });

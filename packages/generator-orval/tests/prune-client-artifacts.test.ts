@@ -14,11 +14,13 @@ describe('pruneClientArtifacts', () => {
   it('removes sdk.ts when only typescript is enabled', async () => {
     tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'prune-'));
     await fs.writeFile(path.join(tmp, 'sdk.ts'), 'export const x = 1;\n', 'utf8');
+    await fs.writeFile(path.join(tmp, 'sdk-request.ts'), 'export {};\n', 'utf8');
     await fs.writeFile(path.join(tmp, 'models.ts'), 'export interface A {}\n', 'utf8');
 
     await pruneClientArtifacts(tmp, ['typescript']);
 
     await expect(fs.stat(path.join(tmp, 'sdk.ts'))).rejects.toThrow();
+    await expect(fs.stat(path.join(tmp, 'sdk-request.ts'))).rejects.toThrow();
     await expect(fs.stat(path.join(tmp, 'models.ts'))).resolves.toBeDefined();
   });
 

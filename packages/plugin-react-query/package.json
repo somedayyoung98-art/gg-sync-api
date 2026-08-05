@@ -1,6 +1,6 @@
 {
   "name": "@somedayyoung/plugin-react-query",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Compatibility marker for built-in React Query generation",
   "license": "MIT",
   "publishConfig": {

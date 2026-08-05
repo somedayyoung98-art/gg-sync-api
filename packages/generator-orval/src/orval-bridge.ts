@@ -3,11 +3,13 @@ import path from 'node:path';
 import { generate } from 'orval';
 import type { PipelineContext } from '@somedayyoung/core';
 import { generateSingleModels } from './generate-single-models';
+import { generateBusinessApis } from './generate-business-apis';
 import {
   createOrvalGenerationPasses,
   mapToOrvalConfig,
 } from './map-config';
 import { pruneClientArtifacts } from './prune-client-artifacts';
+import { writeSdkRequest } from './sdk-request';
 
 export async function runOrvalGenerate(ctx: PipelineContext): Promise<void> {
   await fs.rm(ctx.outputDir, { recursive: true, force: true });
@@ -17,6 +19,10 @@ export async function runOrvalGenerate(ctx: PipelineContext): Promise<void> {
   const specPath = path.join(ctx.outputDir, '.api-sync-openapi.json');
 
   await fs.writeFile(specPath, ctx.contract.raw, 'utf-8');
+
+  if (ctx.config.generators.includes('sdk')) {
+    await writeSdkRequest(ctx.outputDir);
+  }
 
   const passes = createOrvalGenerationPasses(ctx.config.generators);
   for (const pass of passes) {
@@ -32,8 +38,10 @@ export async function runOrvalGenerate(ctx: PipelineContext): Promise<void> {
       ctx.config.output.models === 'single'
         ? 'models.ts'
         : ctx.config.output.models.file;
-    await generateSingleModels(ctx, specPath, file);
+    await generateSingleModels(ctx, file);
   }
+
+  await generateBusinessApis(ctx);
 
   await pruneClientArtifacts(ctx.outputDir, ctx.config.generators);
 

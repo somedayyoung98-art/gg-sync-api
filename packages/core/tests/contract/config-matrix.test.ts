@@ -42,6 +42,7 @@ describe('complete config contract', () => {
             keepSpec: true,
           },
           generators: ['typescript', 'sdk', 'react-query', 'msw', 'zod'],
+          sdk: { businessApi: true },
           compliance: { strict: false },
           runtime: {
             baseURL: '/api/path',
@@ -80,6 +81,7 @@ describe('complete config contract', () => {
         keepSpec: true,
       },
       generators: ['typescript', 'sdk', 'react-query', 'msw', 'zod'],
+      sdk: { businessApi: true },
       compliance: { strict: false },
       runtime: {
         baseURL: '/api/path',

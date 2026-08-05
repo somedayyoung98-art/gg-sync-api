@@ -13,6 +13,7 @@ export default defineConfig({
         keepSpec: false,
       },
       generators: ['typescript', 'sdk'],
+      sdk: { businessApi: true },
       compliance: { strict: false },
       runtime: { baseURL: requireEnv('API_BASE_URL') },
     },

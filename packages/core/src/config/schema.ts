@@ -53,6 +53,12 @@ export const serviceConfigSchema = z
       keepSpec: z.boolean().optional(),
     }),
     generators: z.array(generatorIdSchema).optional(),
+    sdk: z
+      .object({
+        businessApi: z.boolean(),
+      })
+      .strict()
+      .optional(),
     compliance: z
       .object({
         strict: z.boolean().optional(),

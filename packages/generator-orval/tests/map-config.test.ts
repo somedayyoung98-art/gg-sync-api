@@ -1,7 +1,5 @@
-import fs from 'node:fs';
-import os from 'node:os';
 import path from 'node:path';
-import { afterEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import type { PipelineContext } from '@somedayyoung/core';
 import {
   createOrvalGenerationPasses,
@@ -43,18 +41,12 @@ function context(
 }
 
 describe('Orval generation plan', () => {
-  let tmp = '';
-
-  afterEach(() => {
-    if (tmp) fs.rmSync(tmp, { recursive: true, force: true });
-  });
-
   it('creates SDK and React Query passes when both are enabled', () => {
     const generators = ['typescript', 'sdk', 'react-query'] as const;
     const passes = createOrvalGenerationPasses(generators);
 
     expect(passes).toEqual([
-      { client: 'fetch', includeExtras: true },
+      { client: 'axios-functions', includeExtras: true },
       { client: 'react-query', includeExtras: false },
     ]);
 
@@ -62,8 +54,9 @@ describe('Orval generation plan', () => {
     const sdk = mapToOrvalConfig(ctx, 'openapi.json', passes[0]);
     const hooks = mapToOrvalConfig(ctx, 'openapi.json', passes[1]);
     expect(sdk.output.target).toBe(path.join(ctx.outputDir, 'sdk.ts'));
-    expect(sdk.output.override?.fetch).toEqual({
-      includeHttpResponseReturnType: false,
+    expect(sdk.output.override?.mutator).toEqual({
+      path: path.join(ctx.outputDir, 'sdk-request.ts'),
+      name: 'customFetch',
     });
     expect(hooks.output.target).toBe(path.join(ctx.outputDir, 'hooks.ts'));
     expect(hooks.output.httpClient).toBe('fetch');
@@ -84,7 +77,7 @@ describe('Orval generation plan', () => {
     const ctx = context(['typescript', 'sdk', 'zod']);
     const passes = createOrvalGenerationPasses(ctx.config.generators);
     expect(passes).toEqual([
-      { client: 'fetch', includeExtras: true },
+      { client: 'axios-functions', includeExtras: true },
       { client: 'zod', includeExtras: false },
     ]);
     const mapped = mapToOrvalConfig(ctx, 'openapi.json', passes[1]);
@@ -129,24 +122,17 @@ describe('Orval generation plan', () => {
     expect(mapped.output.schemas).toBe(path.join(ctx.outputDir, 'models'));
   });
 
-  it('applies a local fetch mutator only to the fetch pass', () => {
-    tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'api-sync-map-'));
-    const runtimeDir = path.join(tmp, 'src/api/runtime');
-    fs.mkdirSync(runtimeDir, { recursive: true });
-    fs.writeFileSync(
-      path.join(runtimeDir, 'client.ts'),
-      'export async function customFetch() {}\n',
-      'utf8',
-    );
-    const ctx = context(['typescript', 'sdk', 'zod'], tmp);
+  it('uses the generated umi-request adapter only for the SDK pass', () => {
+    const ctx = context(['typescript', 'sdk', 'zod']);
     const passes = createOrvalGenerationPasses(ctx.config.generators);
 
-    const fetchConfig = mapToOrvalConfig(ctx, 'openapi.json', passes[0]);
+    const sdkConfig = mapToOrvalConfig(ctx, 'openapi.json', passes[0]);
     const zodConfig = mapToOrvalConfig(ctx, 'openapi.json', passes[1]);
 
-    expect(fetchConfig.output.override?.mutator).toBeDefined();
-    expect(fetchConfig.output.override?.fetch).toEqual({
-      includeHttpResponseReturnType: false,
+    expect(sdkConfig.output.client).toBe('axios-functions');
+    expect(sdkConfig.output.override?.mutator).toEqual({
+      path: path.join(ctx.outputDir, 'sdk-request.ts'),
+      name: 'customFetch',
     });
     expect(zodConfig.output.override?.mutator).toBeUndefined();
     expect(zodConfig.output.override?.fetch).toBeUndefined();

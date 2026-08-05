@@ -1,3 +1,5 @@
+import type { RequestOptionsInit } from 'umi-request';
+
 export type Middleware = (
   config: CustomFetchConfig<unknown>,
   next: () => Promise<unknown>,
@@ -5,11 +7,15 @@ export type Middleware = (
 
 export interface CustomFetchConfig<T> {
   url: string;
-  method: 'get' | 'post' | 'put' | 'patch' | 'delete';
+  method: string;
   params?: Record<string, unknown>;
   data?: unknown;
   headers?: Record<string, string>;
   responseSchema?: { parse: (data: unknown) => T };
+}
+
+export interface CustomFetchOptions extends RequestOptionsInit {
+  baseURL?: string;
 }
 
 export interface ApiClient {

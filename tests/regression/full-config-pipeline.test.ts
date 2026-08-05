@@ -66,6 +66,7 @@ async function writeConsumerPackage(root: string): Promise<void> {
         private: true,
         type: 'module',
         dependencies: {
+          '@somedayyoung/api-sync': '^3.0.2',
           '@faker-js/faker': '^9.0.0',
           '@tanstack/react-query': '^5.0.0',
           msw: '^2.0.0',
@@ -80,6 +81,8 @@ async function writeConsumerPackage(root: string): Promise<void> {
     ),
     'utf8',
   );
+
+  await linkPackage(root, '@somedayyoung/api-sync', 'packages/api-sync');
 
   await linkPackage(
     root,

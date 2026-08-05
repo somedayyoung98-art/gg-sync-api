@@ -1,7 +1,13 @@
-import type { CreateApiClientOptions } from './client';
+import { extend } from 'umi-request';
 import { shouldSampleValidation } from './sampling';
-import type { CustomFetchConfig, Middleware } from './types';
+import type {
+  CustomFetchConfig,
+  CustomFetchOptions,
+  Middleware,
+} from './types';
 import { validateResponse } from './validate';
+
+export const umiRequest = extend({});
 
 export function buildUrl(
   path: string,
@@ -17,41 +23,25 @@ export function buildUrl(
 
 export async function customFetch<T>(
   config: CustomFetchConfig<T>,
-  options: CreateApiClientOptions = {},
+  options: CustomFetchOptions = {},
   middlewares: Middleware[] = [],
   validationRate = 1,
 ): Promise<T> {
   const run = async (): Promise<T> => {
-    const url = buildUrl(config.url, options.baseURL, config.params);
-    const controller = new AbortController();
-    const timeout = options.timeout ?? 10_000;
-    const timer = setTimeout(() => controller.abort(), timeout);
+    const { baseURL, headers, ...requestOptions } = options;
+    const url = buildUrl(config.url, baseURL, config.params);
+    const data = await umiRequest<T>(url, {
+      ...requestOptions,
+      method: config.method,
+      headers: { ...config.headers, ...headers },
+      data: config.data,
+    });
 
-    try {
-      const res = await fetch(url, {
-        method: config.method.toUpperCase(),
-        headers: {
-          'Content-Type': 'application/json',
-          ...config.headers,
-        },
-        body: config.data != null ? JSON.stringify(config.data) : undefined,
-        signal: controller.signal,
-      });
-
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status} ${res.statusText}`);
-      }
-
-      const data = (await res.json()) as unknown;
-
-      if (config.responseSchema && shouldSampleValidation(validationRate)) {
-        return validateResponse(data, config.responseSchema);
-      }
-
-      return data as T;
-    } finally {
-      clearTimeout(timer);
+    if (config.responseSchema && shouldSampleValidation(validationRate)) {
+      return validateResponse(data, config.responseSchema);
     }
+
+    return data;
   };
 
   let chain = run;

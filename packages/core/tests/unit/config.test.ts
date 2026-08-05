@@ -23,11 +23,13 @@ describe('apiSyncConfigSchema', () => {
           input: { path: './openapi.json' },
           output: { dir: './src/api/generated', format: 'prettier' },
           generators: ['typescript', 'sdk'],
+          sdk: { businessApi: true },
         },
       },
     }));
     expect(result.services.main.generators).toEqual(['typescript', 'sdk']);
     expect(result.services.main.output.format).toBe('prettier');
+    expect(result.services.main.sdk).toEqual({ businessApi: true });
   });
 
   it('accepts multi-service config with distinct output dirs', () => {
@@ -66,6 +68,20 @@ describe('apiSyncConfigSchema', () => {
           main: {
             input: {},
             output: { dir: './out' },
+          },
+        },
+      }),
+    ).toThrow();
+  });
+
+  it('rejects an incomplete SDK config', () => {
+    expect(() =>
+      apiSyncConfigSchema.parse({
+        services: {
+          main: {
+            input: { path: './openapi.json' },
+            output: { dir: './out' },
+            sdk: {},
           },
         },
       }),

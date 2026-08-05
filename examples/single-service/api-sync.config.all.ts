@@ -11,6 +11,7 @@ export default defineConfig({
         keepSpec: false,
       },
       generators: ['typescript', 'sdk', 'react-query', 'msw', 'zod'],
+      sdk: { businessApi: true },
       runtime: {
         baseURL: 'https://api.example.test',
         timeout: 15_000,

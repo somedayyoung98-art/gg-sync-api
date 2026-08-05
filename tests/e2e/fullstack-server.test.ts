@@ -83,6 +83,7 @@ describe('examples/single-service fullstack (Koa → URL → generate)', () => {
     expect(doc.openapi).toBe('3.0.3');
     expect(doc.paths?.['/users/{id}']).toBeDefined();
     expect(doc.paths?.['/products']?.post).toBeDefined();
+    expect(doc.paths?.['/products/{id}']?.delete).toBeDefined();
     expect(doc.components?.schemas?.User).toBeDefined();
     expect(doc.components?.schemas?.CreateProductRequest).toBeDefined();
   });
@@ -110,7 +111,10 @@ describe('examples/single-service fullstack (Koa → URL → generate)', () => {
 
     const sdk = fs.readFileSync(path.join(generated, 'sdk.ts'), 'utf8');
     expect(sdk).toContain('createProduct');
-    expect(sdk).toMatch(/Promise<User>/);
+    expect(sdk).toContain('deleteProduct');
+    expect(sdk).toContain('export const userApi');
+    expect(sdk).toContain('export const productApi');
+    expect(sdk).toContain('customFetch<User>');
     expect(sdk).not.toContain('getUserByIdResponse200');
 
     const tsxCli = createRequire(path.join(exampleDir, 'package.json')).resolve(
@@ -121,13 +125,34 @@ describe('examples/single-service fullstack (Koa → URL → generate)', () => {
       [
         tsxCli,
         '--eval',
-        "import('./src/api/generated-url/sdk.ts').then(async ({ getUserById }) => console.log(JSON.stringify(await getUserById('u_1'))))",
+        "import('./src/api/generated-url/sdk.ts').then(async ({ userApi }) => console.log(JSON.stringify(await userApi.getUserById('u_1'))))",
       ],
       { cwd: exampleDir, encoding: 'utf8' },
     );
     expect(JSON.parse(result.trim())).toMatchObject({
       id: 'u_1',
       firstName: 'Jane',
+    });
+
+    const productResult = execFileSync(
+      process.execPath,
+      [
+        tsxCli,
+        '--eval',
+        `import('./src/api/generated-url/sdk.ts').then(async ({ productApi }) => {
+          const product = await productApi.createProduct({
+            name: 'Mouse', sku: 'SKU-1', priceCents: 1999,
+          });
+          await productApi.deleteProduct(product.id);
+          console.log(JSON.stringify(product));
+        })`,
+      ],
+      { cwd: exampleDir, encoding: 'utf8' },
+    );
+    expect(JSON.parse(productResult.trim())).toMatchObject({
+      name: 'Mouse',
+      sku: 'SKU-1',
+      priceCents: 1999,
     });
 
     expect(

@@ -10,6 +10,7 @@ export async function pruneClientArtifacts(
 
   if (!enabled.has('sdk')) {
     await fs.rm(path.join(outputDir, 'sdk.ts'), { force: true });
+    await fs.rm(path.join(outputDir, 'sdk-request.ts'), { force: true });
   }
   if (!enabled.has('react-query')) {
     await fs.rm(path.join(outputDir, 'hooks.ts'), { force: true });

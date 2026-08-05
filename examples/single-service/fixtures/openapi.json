@@ -46,6 +46,7 @@
     "/users/{id}": {
       "get": {
         "operationId": "getUserById",
+        "tags": ["User"],
         "summary": "Get user by id",
         "parameters": [
           {

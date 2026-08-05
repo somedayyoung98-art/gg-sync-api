@@ -14,12 +14,12 @@ describe('runtime response validation', () => {
   });
 
   it('rejects a response that violates its schema', async () => {
-    globalThis.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      json: async () => ({ id: 999 }),
-    }) as typeof fetch;
+    globalThis.fetch = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ id: 999 }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    ) as typeof fetch;
 
     const client = createApiClient({
       baseURL: 'https://api.example.test',
@@ -45,12 +45,12 @@ describe('runtime response validation', () => {
 
   it('skips validation when validationRate is 0', async () => {
     const payload = { id: 1 };
-    globalThis.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      json: async () => payload,
-    }) as typeof fetch;
+    globalThis.fetch = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify(payload), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    ) as typeof fetch;
 
     const client = createApiClient({
       baseURL: 'https://api.example.test',

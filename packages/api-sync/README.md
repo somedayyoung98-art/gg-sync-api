@@ -36,6 +36,7 @@ export default defineConfig({
         format: "auto",
       },
       generators: ["typescript", "sdk"],
+      sdk: { businessApi: true },
       compliance: { strict: false },
       runtime: { baseURL: "https://api.example.com" },
     },
@@ -57,7 +58,7 @@ export default defineConfig({
         models: { file: "type.ts" },
         format: "auto",
       },
-      generators: ["typescript", "sdk"],
+      generators: ["typescript"],
       compliance: { strict: false },
     },
   },
@@ -106,6 +107,14 @@ output: {
 ```typescript
 generators: ["typescript", "sdk", "react-query", "msw", "zod"];
 ```
+
+`sdk` 默认导出由 `operationId` 命名的扁平方法。启用业务 API 后，带 `tags` 的接口还会按第一个 tag 聚合：
+
+```typescript
+sdk: { businessApi: true }
+```
+
+例如 `AccountGroup` 会生成 `accountGroupApi`；没有 tag 的接口继续保持扁平导出。SDK 请求由包内置的 `umi-request` 执行，消费项目不需要额外安装请求库。
 
 | 配置          | 产物         | 消费项目依赖             |
 | ------------- | ------------ | ------------------------ |

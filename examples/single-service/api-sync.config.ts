@@ -5,6 +5,7 @@ export default defineConfig({
     main: {
       input: { path: './fixtures/openapi.json' },
       output: { dir: './src/api/generated' },
+      sdk: { businessApi: true },
     },
   },
 });

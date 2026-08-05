@@ -25,6 +25,7 @@ export interface ResolvedServiceConfig {
     keepSpec: boolean;
   };
   generators: GeneratorId[];
+  sdk?: ServiceConfig['sdk'];
   compliance: { strict: boolean };
   runtime?: ServiceConfig['runtime'];
 }

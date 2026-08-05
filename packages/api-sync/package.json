@@ -1,6 +1,6 @@
 {
   "name": "@somedayyoung/api-sync",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Schema-driven API sync with a single install entry",
   "license": "MIT",
   "repository": {
@@ -32,14 +32,14 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsup && tsc -p tsconfig.dts.json",
+    "build": "node ../../scripts/build-workspace-dep.mjs @somedayyoung/runtime build && tsup && tsc -p tsconfig.dts.json",
     "test": "tsc -p tsconfig.types.json",
     "prepack": "npm run build"
   },
   "dependencies": {
-    "@somedayyoung/cli": "^3.0.2",
-    "@somedayyoung/core": "^3.0.2",
-    "@somedayyoung/runtime": "^3.0.2"
+    "@somedayyoung/cli": "^3.0.3",
+    "@somedayyoung/core": "^3.0.3",
+    "@somedayyoung/runtime": "^3.0.3"
   },
   "engines": {
     "node": ">=20"

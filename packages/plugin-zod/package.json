@@ -1,6 +1,6 @@
 {
   "name": "@somedayyoung/plugin-zod",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Compatibility marker for built-in Zod generation",
   "license": "MIT",
   "publishConfig": {
