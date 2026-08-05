@@ -1,7 +1,7 @@
 {
   "name": "@somedayyoung/api-sync",
   "version": "3.0.0",
-  "description": "Schema-driven API sync ? single install entry",
+  "description": "Schema-driven API sync with a single install entry",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -20,25 +20,29 @@
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "files": [
     "dist",
     "bin",
     "README.md"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && tsc -p tsconfig.dts.json",
+    "test": "tsc -p tsconfig.types.json",
     "prepack": "npm run build"
   },
   "dependencies": {
     "@somedayyoung/cli": "^3.0.0",
     "@somedayyoung/core": "^3.0.0",
-    "@somedayyoung/generator-orval": "^3.0.0",
     "@somedayyoung/runtime": "^3.0.0"
   },
-  "optionalDependencies": {
-    "@somedayyoung/plugin-msw": "^3.0.0",
-    "@somedayyoung/plugin-react-query": "^3.0.0",
-    "@somedayyoung/plugin-zod": "^3.0.0"
+  "engines": {
+    "node": ">=20"
   },
   "devDependencies": {
     "tsup": "^8.4.0",

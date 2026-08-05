@@ -2,6 +2,7 @@
   "name": "gg-sync-api",
   "version": "0.0.0",
   "private": true,
+  "packageManager": "pnpm@11.1.3",
   "description": "Schema-driven frontend API sync platform (monorepo)",
   "workspaces": [
     "packages/*",
@@ -9,18 +10,25 @@
   ],
   "scripts": {
     "build": "node scripts/pm.mjs build-all",
-    "test": "node scripts/pm.mjs test-packages && node scripts/pm.mjs test-e2e",
+    "test": "node scripts/pm.mjs test-packages && node scripts/pm.mjs test-regression && node scripts/pm.mjs test-e2e && node scripts/pm.mjs test-release",
     "test:workspace": "vitest run",
     "test:packages": "node scripts/pm.mjs test-packages",
+    "test:regression": "node scripts/pm.mjs test-regression",
     "test:e2e": "node scripts/pm.mjs test-e2e",
-    "lint": "echo \"lint pending\"",
+    "test:release": "node scripts/pm.mjs test-release",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "node scripts/pm.mjs build-all && changeset publish",
     "sync-api": "node scripts/pm.mjs exec-api-sync",
     "clean:modules": "node scripts/clean-modules.mjs"
   },
-  "keywords": ["openapi", "api-sync", "codegen", "typescript", "monorepo"],
+  "keywords": [
+    "openapi",
+    "api-sync",
+    "codegen",
+    "typescript",
+    "monorepo"
+  ],
   "author": "somedayyoung98-art",
   "license": "MIT",
   "repository": {

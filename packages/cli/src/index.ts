@@ -1,9 +1,9 @@
 import { cac } from 'cac';
 import '@somedayyoung/generator-orval';
+import packageJson from '../package.json';
 import { runCommand } from './commands/run';
 import { diffCommand } from './commands/diff';
 import { scaffoldCommand } from './commands/scaffold';
-import { doctorCommand } from './commands/doctor';
 import { attachSharedOptions, type SharedCommandOptions } from './options';
 
 const cli = cac('sync-api');
@@ -26,15 +26,6 @@ bindPipelineCommand('diff', 'Pull schema and compare against baseline only', dif
 bindPipelineCommand('[run]', 'Default: pull, diff, generate', runCommand);
 
 cli
-  .command('doctor', 'Validate config, peers, and output directories')
-  .option('--config <path>', 'Config file path', { default: './api-sync.config.ts' })
-  .option('--cwd <dir>', 'Working directory')
-  .action(async (options: { cwd?: string; config?: string }) => {
-    const code = await doctorCommand(options);
-    process.exit(code);
-  });
-
-cli
   .command('scaffold', 'Create src/api generated, runtime, and domain layout')
   .option('--cwd <dir>', 'Working directory')
   .option('--api-dir <path>', 'API root directory', { default: 'src/api' })
@@ -49,7 +40,7 @@ cli
   });
 
 cli.help();
-cli.version('0.0.0');
+cli.version(packageJson.version);
 
 const argv = process.argv.slice(2);
 if (argv.length === 0) {

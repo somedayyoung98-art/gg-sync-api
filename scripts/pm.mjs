@@ -69,7 +69,9 @@ function printUsage() {
 Commands:
   build-all          Build all workspace packages
   test-packages      Run tests in all workspace packages
+  test-regression    Run the full config and generator regression suite
   test-e2e           Run root e2e vitest project
+  test-release       Build and test packed packages in a clean npm consumer
   exec-api-sync      Forward args to sync-api CLI (e.g. run --strict)
 `);
 }
@@ -94,8 +96,15 @@ if (isCli) {
       case 'test-packages':
         runInAllWorkspaces('test');
         break;
+      case 'test-regression':
+        run('npx vitest run --config vitest.regression.config.ts');
+        break;
       case 'test-e2e':
         run('npx vitest run --project e2e');
+        break;
+      case 'test-release':
+        runInAllWorkspaces('build');
+        run('npx vitest run --config vitest.release.config.ts');
         break;
       case 'exec-api-sync':
         execInWorkspace('@somedayyoung/api-sync', rest);

@@ -1,19 +1,7 @@
-import { formatDiffReport } from '../../diff/format-report';
-import type { PipelineContext } from '../types';
+import type { GateDecision, PipelineContext } from '../types';
 
-/**
- * Strict mode: exit 1 on breaking diff; downstream stages skip cache-write when exitCode !== 0.
- */
-export function runStrictGate(ctx: PipelineContext): PipelineContext {
-  if (!ctx.diff?.hasBreaking) return ctx;
-
-  if (ctx.meta.strictMode) {
-    console.error(formatDiffReport(ctx.diff));
-    return {
-      ...ctx,
-      meta: { ...ctx.meta, exitCode: 1 },
-    };
-  }
-
-  return ctx;
+export function runStrictGate(ctx: PipelineContext): GateDecision {
+  return ctx.config.compliance.strict && ctx.diff.hasBreaking
+    ? { kind: 'blocked', context: ctx }
+    : { kind: 'proceed', context: ctx };
 }

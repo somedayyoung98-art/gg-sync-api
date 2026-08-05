@@ -11,6 +11,7 @@ export default defineConfig({
       path.join(repoRoot, 'packages/cli/vitest.config.ts'),
       path.join(repoRoot, 'packages/runtime/vitest.config.ts'),
       path.join(repoRoot, 'packages/plugin-msw/vitest.config.ts'),
+      path.join(repoRoot, 'vitest.regression.config.ts'),
       path.join(repoRoot, 'vitest.e2e.config.ts'),
     ],
   },

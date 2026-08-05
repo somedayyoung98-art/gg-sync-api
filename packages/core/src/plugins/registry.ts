@@ -1,20 +1,11 @@
-import type { GeneratorId } from '../pipeline/types';
-import type { GeneratorPlugin } from './types';
+import type { CodeGenerator } from './types';
 
-const plugins = new Map<GeneratorId, GeneratorPlugin>();
+let codeGenerator: CodeGenerator;
 
-export function register(plugin: GeneratorPlugin): void {
-  plugins.set(plugin.id, plugin);
+export function registerGenerator(generator: CodeGenerator): void {
+  codeGenerator = generator;
 }
 
-export function getGenerator(id: GeneratorId): GeneratorPlugin | undefined {
-  return plugins.get(id);
-}
-
-export function listGenerators(): GeneratorId[] {
-  return [...plugins.keys()];
-}
-
-export function clearRegistry(): void {
-  plugins.clear();
+export function generateCode(...args: Parameters<CodeGenerator>): ReturnType<CodeGenerator> {
+  return codeGenerator(...args);
 }

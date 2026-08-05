@@ -1,13 +1,12 @@
 import path from 'node:path';
 import { createJiti } from 'jiti';
+import { fromZodError } from 'zod-validation-error';
 import {
   apiSyncConfigSchema,
-  type ApiSyncConfigInput,
+  type ApiSyncConfig,
+  type ServiceConfig,
 } from './schema';
-import type {
-  ApiSyncConfig,
-  ResolvedServiceConfig,
-} from '../pipeline/types';
+import type { ResolvedServiceConfig } from '../pipeline/types';
 
 export interface LoadConfigOptions {
   cwd?: string;
@@ -24,19 +23,24 @@ export async function loadConfig(
 
   const jiti = createJiti(cwd, { interopDefault: true });
   const raw = await jiti.import(configPath);
-  const parsed = apiSyncConfigSchema.parse(
+  const result = apiSyncConfigSchema.safeParse(
     (raw as { default?: unknown }).default ?? raw,
   );
-  return parsed as ApiSyncConfig;
+  if (!result.success) {
+    throw fromZodError(result.error, {
+      prefix: `Invalid API Sync config: ${configPath}`,
+    });
+  }
+  return result.data;
 }
 
 export function resolveServiceConfig(
   namespace: string,
-  service: ApiSyncConfigInput['services'][string],
+  service: ServiceConfig,
   global: ApiSyncConfig,
   strictFlag?: boolean,
 ): ResolvedServiceConfig {
-  const envStrict = process.env.API_SYNC_STRICT === '1';
+  const envStrict = process.env.API_SYNC_STRICT === '1' ? true : undefined;
   const strict =
     strictFlag ??
     envStrict ??
@@ -46,9 +50,13 @@ export function resolveServiceConfig(
 
   return {
     namespace,
-    input: service.input,
+    input: 'path' in service.input
+      ? { kind: 'file', path: service.input.path }
+      : { kind: 'url', url: service.input.url },
     output: {
       ...service.output,
+      models: service.output.models ?? 'split',
+      format: service.output.format ?? 'auto',
       keepSpec: service.output.keepSpec ?? false,
     },
     generators: service.generators ?? ['typescript', 'sdk'],

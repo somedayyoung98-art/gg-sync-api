@@ -1,5 +1,4 @@
 import '@somedayyoung/generator-orval';
-import '@somedayyoung/plugin-react-query';
 import { execSync } from 'node:child_process';
 import fs from 'node:fs/promises';
 import os from 'node:os';
@@ -73,7 +72,9 @@ describe('react-query generator', () => {
     expect(code).toBe(0);
 
     const hooksPath = path.join(tmp, 'src/api/generated/hooks.ts');
+    const sdkPath = path.join(tmp, 'src/api/generated/sdk.ts');
     await expect(fs.stat(hooksPath)).resolves.toBeDefined();
+    await expect(fs.stat(sdkPath)).resolves.toBeDefined();
     const hooks = await fs.readFile(hooksPath, 'utf8');
     expect(hooks.length).toBeGreaterThan(0);
   }, 60_000);

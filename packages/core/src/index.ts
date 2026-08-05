@@ -1,12 +1,21 @@
 export type {
-  ApiSyncConfig,
   APIContract,
   DiffReport,
   DiffItem,
-  GeneratorId,
+  InputSource,
+  Baseline,
+  PulledContext,
   PipelineContext,
+  GateDecision,
+  OpenAPIDocument,
   ResolvedServiceConfig,
 } from './pipeline/types';
+export type {
+  ApiSyncConfig,
+  ServiceConfig,
+  GeneratorId,
+  ModelsOutput,
+} from './config/schema';
 
 export {
   loadConfig,
@@ -14,25 +23,16 @@ export {
   resolveServiceConfig,
 } from './config/load';
 export {
-  checkPeers,
-  formatPeerCheckReport,
-  type PeerCheckResult,
-  type PeerIssue,
-} from './doctor/check-peers';
-export {
-  loadPluginsForGenerators,
-  type PluginLoadIssue,
-} from './doctor/load-plugins';
-export { runDoctorStage, type DoctorStageResult } from './pipeline/stages/doctor';
-export {
   apiSyncConfigSchema,
+  defineConfig,
   generatorIdSchema,
+  modelsOutputSchema,
   namespaceKeySchema,
 } from './config/schema';
 export {
   runPipeline,
   type PipelineMode,
-  type NamespaceRunResult,
+  type ServiceOutcome,
   type PipelineRunResult,
 } from './pipeline/runner';
 export {
@@ -41,15 +41,10 @@ export {
 } from './pipeline/namespace';
 export { diffOpenApiSpecs, compareWithCache } from './diff/detector';
 export { formatDiffReport } from './diff/format-report';
-export { register, getGenerator, listGenerators } from './plugins/registry';
-export { registerBuiltinPlugins } from './plugins/builtins';
-export type { GeneratorPlugin } from './plugins/types';
+export { registerGenerator } from './plugins/registry';
+export type { CodeGenerator } from './plugins/types';
 export { pullSchema } from './schema/puller';
 export { hashSchema } from './schema/hash';
-export {
-  normalizeOpenApiForTooling,
-  OPENAPI_TOOLING_VERSION,
-} from './schema/normalize-openapi';
 export {
   getCacheRoot,
   getNamespaceCacheDir,

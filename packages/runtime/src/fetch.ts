@@ -8,14 +8,11 @@ export function buildUrl(
   baseURL?: string,
   params?: Record<string, unknown>,
 ): string {
-  const base = baseURL?.replace(/\/$/, '') ?? '';
-  const full = path.startsWith('http') ? path : `${base}${path}`;
-  if (!params || Object.keys(params).length === 0) return full;
-  const u = new URL(full, 'http://localhost');
-  for (const [k, v] of Object.entries(params)) {
-    if (v != null) u.searchParams.set(k, String(v));
+  const url = new URL(path, baseURL);
+  for (const [k, v] of Object.entries(params ?? {})) {
+    if (v != null) url.searchParams.set(k, String(v));
   }
-  return path.startsWith('http') ? u.toString() : `${u.pathname}${u.search}`;
+  return url.toString();
 }
 
 export async function customFetch<T>(
@@ -48,10 +45,7 @@ export async function customFetch<T>(
       const data = (await res.json()) as unknown;
 
       if (config.responseSchema && shouldSampleValidation(validationRate)) {
-        return validateResponse(data, config.responseSchema, {
-          method: config.method,
-          url: config.url,
-        });
+        return validateResponse(data, config.responseSchema);
       }
 
       return data as T;

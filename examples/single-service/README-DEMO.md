@@ -1,84 +1,72 @@
-# 全链路手动验证：Koa 后端 → URL 拉取 OpenAPI → 生成 TypeScript
+# Single-service 配置回归示例
 
-## 环境配置（必做）
+这个目录既是可运行示例，也是 `sync-api` 的消费者级配置测试场。所有配置都通过
+`defineConfig` 获得编译期类型检查，并在根目录的 E2E 测试中通过真实 CLI 执行。
+
+## 配置矩阵
+
+| 配置文件 | 覆盖内容 | 输出目录 |
+| --- | --- | --- |
+| `api-sync.config.ts` | 最小配置与全部默认值 | `src/api/generated` |
+| `api-sync.config.single.ts` | `models: 'single'`、`format: 'prettier'`、`keepSpec: true` | `src/api/generated-single` |
+| `api-sync.config.custom.ts` | 自定义嵌套 `type.ts`、`format: false`、仅生成类型 | `src/api/generated-custom` |
+| `api-sync.config.all.ts` | TypeScript、SDK、React Query、MSW、Zod 和全部 runtime 字段 | `src/api/generated-all` |
+| `api-sync.config.multi.ts` | 全局配置继承、服务覆盖、namespace 过滤与缓存隔离 | `src/api/generated-multi` |
+| `api-sync.config.url.ts` | 从 HTTP URL 拉取 OpenAPI | `src/api/generated-url` |
+
+`test-configs/` 保存非法配置夹具，用于验证缺失字段、input 冲突、错误 models 文件、
+runtime 范围、namespace 格式和未知字段的错误路径。
+
+## 本地 path 模式
 
 ```bash
-cd examples/single-service
+pnpm sync-api
+pnpm sync-api:single
+pnpm sync-api:custom
+pnpm sync-api:all
+pnpm sync-api:multi
+```
+
+这些命令读取 `fixtures/openapi.json`，不需要启动后端。
+
+## URL 全链路
+
+复制环境变量文件：
+
+```bash
 cp .env.example .env
-# 编辑 .env，至少设置 OPENAPI_URL
 ```
 
-| 变量 | 说明 |
-|------|------|
-| `OPENAPI_HOST` / `OPENAPI_PORT` | 本地 Koa 监听地址（默认 `127.0.0.1:3100`） |
-| `OPENAPI_SERVER_URL` | 写入 OpenAPI `servers` 的公开地址（可选） |
-| `OPENAPI_URL` | **sync-api 拉取地址**（`/openapi.json` 或 `/v3/api-docs`） |
-
-远程 Java springdoc 只在 `.env` 里写真实地址，**不要写进仓库**。
-
-## 架构
-
-```text
-server/ (Koa + Zod) → GET /openapi.json
-api-sync.config.url.ts → input.url = $OPENAPI_URL
-sync-api run → src/api/generated/
-```
-
-## 前置
-
-```bash
-# 仓库根目录
-pnpm install && pnpm build
-```
-
-## 一步一步验证
-
-### 1. 启动 Koa
+启动由 Koa 路由和 Zod schema 生成 OpenAPI 的示例服务：
 
 ```bash
 pnpm server
 ```
 
-日志中的 URL 来自 `.env` 中的 `OPENAPI_SERVER_URL` 或 `HOST`/`PORT`。
-
-### 2. 查看 OpenAPI
-
-```bash
-curl -s "$OPENAPI_URL" | head -40
-```
-
-（PowerShell 先 `$env:OPENAPI_URL = "..."`）
-
-### 3. 导出 fixture（可选）
-
-```bash
-pnpm openapi:dump
-```
-
-### 4. 拉取并生成类型
+在另一个终端运行：
 
 ```bash
 pnpm sync-api:url
 ```
 
-### 5. 拉取远程 springdoc
+`OPENAPI_URL` 可以替换为真实的 springdoc、Swagger 或其他 OpenAPI 3.x 地址，
+`API_BASE_URL` 是生成 SDK、React Query 和 MSW 请求地址的服务根路径。
 
-在 `.env` 中设置你的 `OPENAPI_URL`，然后：
+## 自动化验证
 
-```bash
-pnpm sync-api:remote
-```
-
-产物：`src/api/generated-remote/models.ts` + `sdk.ts`（`models: single`）。
-
-### 6. 离线 path 模式
+仓库根目录执行：
 
 ```bash
-pnpm sync-api
+pnpm test:e2e
 ```
 
-使用 `fixtures/openapi.json`（可由 `openapi:dump` 生成）。
+测试会验证：
 
-## 自动化
-
-仓库根目录：`pnpm test:e2e`（本地 Koa 使用测试端口，不依赖 `.env`）。
+- 所有默认值和显式配置都能正确解析。
+- path 与 URL 两种输入都能生成可靠 TypeScript。
+- split、single、自定义文件三种 models 形态。
+- auto、prettier、false 三种 formatter 模式。
+- SDK、React Query、MSW、Zod 的组合生成。
+- `keepSpec`、strict、runtime 继承覆盖、namespace 缓存隔离。
+- 非法配置能够报告准确字段路径。
+- 所有生成产物和有效配置最终通过 TypeScript 编译。

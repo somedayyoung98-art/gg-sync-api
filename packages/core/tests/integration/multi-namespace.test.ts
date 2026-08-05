@@ -64,12 +64,13 @@ describe('multi-namespace pipeline', () => {
     const services = resolveAllServices(config);
 
     const result = await runPipeline({ cwd: tmp, services });
-    expect(result.exitCode).toBe(0);
-    expect(result.namespaces).toHaveLength(2);
-    expect(result.namespaces.map((n) => n.namespace).sort()).toEqual([
-      'billing',
-      'user',
-    ]);
+    expect(result.kind).toBe('success');
+    expect(result.outcomes).toHaveLength(2);
+    expect(
+      result.outcomes
+        .map((outcome) => outcome.context.config.namespace)
+        .sort(),
+    ).toEqual(['billing', 'user']);
 
     const userSdk = path.join(tmp, 'src/api/user/generated/sdk.ts');
     const billingSdk = path.join(tmp, 'src/api/billing/generated/sdk.ts');
@@ -110,8 +111,8 @@ describe('multi-namespace pipeline', () => {
       services: userOnly,
       namespaceFilter: 'user',
     });
-    expect(partial.namespaces).toHaveLength(1);
-    expect(partial.namespaces[0]?.namespace).toBe('user');
+    expect(partial.outcomes).toHaveLength(1);
+    expect(partial.outcomes[0]?.context.config.namespace).toBe('user');
 
     const billingCacheMtimeAfter = (
       await fs.stat(getBaselineSchemaPath(tmp, 'billing'))
@@ -156,11 +157,15 @@ describe('multi-namespace pipeline', () => {
     );
 
     const result = await runPipeline({ cwd: tmp, services, mode: 'diff-only' });
-    expect(result.exitCode).toBe(1);
-    const billing = result.namespaces.find((n) => n.namespace === 'billing');
-    const user = result.namespaces.find((n) => n.namespace === 'user');
-    expect(billing?.exitCode).toBe(1);
-    expect(user?.exitCode).toBe(0);
+    expect(result.kind).toBe('blocked');
+    const billing = result.outcomes.find(
+      (outcome) => outcome.context.config.namespace === 'billing',
+    );
+    const user = result.outcomes.find(
+      (outcome) => outcome.context.config.namespace === 'user',
+    );
+    expect(billing?.kind).toBe('blocked');
+    expect(user?.kind).toBe('success');
 
     const userCache = await fs.readFile(
       getBaselineSchemaPath(tmp, 'user'),

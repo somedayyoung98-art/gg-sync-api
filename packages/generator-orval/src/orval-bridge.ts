@@ -1,48 +1,43 @@
 import fs from 'node:fs/promises';
-import os from 'node:os';
 import path from 'node:path';
 import { generate } from 'orval';
-import type { PipelineContext, PluginLoadIssue } from '@somedayyoung/core';
-import { loadPluginsForGenerators } from '@somedayyoung/core';
-import { consolidateModelsToSingleFile } from './consolidate-models';
-import { mapToOrvalConfig } from './map-config';
+import type { PipelineContext } from '@somedayyoung/core';
+import { generateSingleModels } from './generate-single-models';
+import {
+  createOrvalGenerationPasses,
+  mapToOrvalConfig,
+} from './map-config';
+import { pruneClientArtifacts } from './prune-client-artifacts';
 
 export async function runOrvalGenerate(ctx: PipelineContext): Promise<void> {
-  const loadIssues = await loadPluginsForGenerators(ctx.config.generators);
-  if (loadIssues.length > 0) {
-    const msg = loadIssues
-      .map((i: PluginLoadIssue) => `${i.packageName}: ${i.installHint}`)
-      .join('\n');
-    throw new Error(`Missing optional plugin packages:\n${msg}`);
-  }
-  await fs.mkdir(ctx.meta.outputDir, { recursive: true });
+  await fs.rm(ctx.outputDir, { recursive: true, force: true });
+  await fs.mkdir(ctx.outputDir, { recursive: true });
 
-  const keepSpec = ctx.config.output.keepSpec ?? false;
-  const specInOutput = path.join(ctx.meta.outputDir, '.api-sync-openapi.json');
-  const specPath = keepSpec
-    ? specInOutput
-    : path.join(os.tmpdir(), `api-sync-${ctx.namespace}-${ctx.contract.hash}.json`);
+  const keepSpec = ctx.config.output.keepSpec;
+  const specPath = path.join(ctx.outputDir, '.api-sync-openapi.json');
 
   await fs.writeFile(specPath, ctx.contract.raw, 'utf-8');
 
-  try {
-    const mapped = mapToOrvalConfig(ctx, specPath);
-
+  const passes = createOrvalGenerationPasses(ctx.config.generators);
+  for (const pass of passes) {
+    const mapped = mapToOrvalConfig(ctx, specPath, pass);
     await generate({
       input: mapped.input,
       output: mapped.output,
     });
-
-    if (ctx.config.output.models === 'single') {
-      await consolidateModelsToSingleFile(ctx.meta.outputDir);
-    }
-  } finally {
-    if (!keepSpec) {
-      await fs.unlink(specPath).catch(() => undefined);
-    }
   }
 
+  if (ctx.config.output.models !== 'split') {
+    const file =
+      ctx.config.output.models === 'single'
+        ? 'models.ts'
+        : ctx.config.output.models.file;
+    await generateSingleModels(ctx, specPath, file);
+  }
+
+  await pruneClientArtifacts(ctx.outputDir, ctx.config.generators);
+
   if (!keepSpec) {
-    await fs.unlink(specInOutput).catch(() => undefined);
+    await fs.rm(specPath, { force: true });
   }
 }

@@ -8,11 +8,12 @@
 
 ## 特性
 
-- **一条命令** — `sync-api run`：pull → cache → diff → generate → format
+- **一条命令** — `sync-api run`：pull → diff → generate → format → cache
+- **项目级格式化** — 优先复用业务项目的 Prettier，否则使用工具内置版本
 - **契约治理** — `--strict` / `API_SYNC_STRICT=1` 在 CI 中拦截破坏性变更
 - **多后端** — 多个 namespace，各自独立的 `output.dir` 与缓存
 - **三层目录** — `generated/` / `runtime/` / `domain/`（`sync-api scaffold`）
-- **可选插件** — react-query、msw、zod（`sync-api doctor` 检查 peer）
+- **可选产物** — react-query、msw、zod
 
 ## 仓库结构
 
@@ -20,12 +21,12 @@
 packages/
   api-sync/           # npm 入口，提供 sync-api CLI
   core/               # 流水线：pull、diff、cache、runner
-  cli/                # run / diff / doctor / scaffold
+  cli/                # run / diff / scaffold
   generator-orval/    # Orval 代码生成桥接
   runtime/            # createApiClient、customFetch、校验透传
-  plugin-react-query/
-  plugin-msw/
-  plugin-zod/
+  plugin-react-query/ # 兼容包；生成能力已内置
+  plugin-msw/         # 兼容包；生成能力已内置
+  plugin-zod/         # 兼容包；生成能力已内置
 examples/
   single-service/     # 单服务示例 + Koa 全链路演示（见 README-DEMO.md）+ e2e
   multi-service/      # 多 namespace 示例
@@ -34,8 +35,6 @@ docs/
 .github/workflows/
   contract-check.yml
 ```
-
-> 设计文档（`specs/`、`.specify/`）仅保留在本地，未推送到 GitHub。
 
 ## 在业务项目中使用
 
@@ -55,37 +54,41 @@ pnpm add -D @somedayyoung/api-sync
 
 ```typescript
 // api-sync.config.ts
-export default {
+import { defineConfig } from "@somedayyoung/api-sync";
+
+export default defineConfig({
   services: {
     main: {
       input: { url: process.env.OPENAPI_URL! },
-      output: { dir: './src/api/generated' },
-      generators: ['typescript', 'sdk'],
+      output: { dir: "./src/api/generated" },
+      generators: ["typescript", "sdk"],
     },
   },
-};
+});
 ```
 
 ### 多后端（每个服务一套类型）
 
 ```typescript
-export default {
+import { defineConfig } from "@somedayyoung/api-sync";
+
+export default defineConfig({
   services: {
     user: {
       input: { url: process.env.USER_OPENAPI_URL! },
-      output: { dir: './src/api/user/generated' },
-      generators: ['typescript', 'sdk'],
+      output: { dir: "./src/api/user/generated" },
+      generators: ["typescript", "sdk"],
     },
     billing: {
       input: { url: process.env.BILLING_OPENAPI_URL! },
-      output: { dir: './src/api/billing/generated' },
-      generators: ['typescript', 'sdk'],
+      output: { dir: "./src/api/billing/generated" },
+      generators: ["typescript", "sdk"],
     },
   },
-};
+});
 ```
 
-生成结果在各自 `output.dir` 下的 `models/`（类型）与 `sdk.ts`（请求函数）。**`output.dir` 可自定义；单个文件名暂不支持配置。**
+生成结果默认位于各自 `output.dir` 下的 `models/`；配置 `models: { file: 'type.ts' }` 可生成单个类型文件。
 
 ```bash
 pnpm sync-api scaffold
@@ -94,7 +97,7 @@ pnpm sync-api run
 
 ## 本地开发（贡献者）
 
-**环境：** Node.js ≥ 20，pnpm 9+
+**环境：** Node.js >= 20，pnpm 11.1.3
 
 ```bash
 git clone https://github.com/somedayyoung98-art/gg-sync-api.git
@@ -104,14 +107,14 @@ pnpm build
 pnpm test
 ```
 
-| 命令 | 说明 |
-|------|------|
-| `pnpm build` | 构建所有 packages |
-| `pnpm test` | 各包测试 + e2e |
-| `pnpm test:e2e` | 仅 `examples/single-service` |
-| `pnpm changeset` | 创建变更集 |
-| `pnpm version-packages` | 应用版本号 |
-| `pnpm release` | 构建并发布到 npm |
+| 命令                    | 说明                         |
+| ----------------------- | ---------------------------- |
+| `pnpm build`            | 构建所有 packages            |
+| `pnpm test`             | 各包测试 + e2e               |
+| `pnpm test:e2e`         | 仅 `examples/single-service` |
+| `pnpm changeset`        | 创建变更集                   |
+| `pnpm version-packages` | 应用版本号                   |
+| `pnpm release`          | 构建并发布到 npm             |
 
 **跑示例：**
 
@@ -130,10 +133,10 @@ GitHub 与 npm 发布步骤见 [docs/publish-to-github-and-npm.md](./docs/publis
 
 ## 文档索引
 
-| 文档 | 说明 |
-|------|------|
-| [packages/api-sync/README.md](./packages/api-sync/README.md) | 消费者：安装、CLI、多后端、插件、排错 |
-| [docs/publish-to-github-and-npm.md](./docs/publish-to-github-and-npm.md) | 维护者：推送与 npm 发布 |
+| 文档                                                                     | 说明                                  |
+| ------------------------------------------------------------------------ | ------------------------------------- |
+| [packages/api-sync/README.md](./packages/api-sync/README.md)             | 消费者：安装、CLI、多后端、插件、排错 |
+| [docs/publish-to-github-and-npm.md](./docs/publish-to-github-and-npm.md) | 维护者：推送与 npm 发布               |
 
 ## License
 

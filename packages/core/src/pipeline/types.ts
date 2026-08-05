@@ -1,40 +1,37 @@
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
+import type {
+  GeneratorId,
+  ModelsOutput,
+  ServiceConfig,
+} from '../config/schema';
 
-export type GeneratorId = 'typescript' | 'sdk' | 'react-query' | 'msw' | 'zod';
+export type { GeneratorId } from '../config/schema';
 
-export interface ServiceConfig {
-  input: { url?: string; path?: string };
+export type InputSource =
+  | { kind: 'file'; path: string }
+  | { kind: 'url'; url: string };
+
+export type OpenAPIDocument =
+  | OpenAPIV3.Document
+  | OpenAPIV3_1.Document;
+
+export interface ResolvedServiceConfig {
+  namespace: string;
+  input: InputSource;
   output: {
     dir: string;
-    /** `split` = one file per schema under models/; `single` = one models.ts */
-    models?: 'split' | 'single';
-    /** Persist pulled OpenAPI next to generated TS (default false). */
-    keepSpec?: boolean;
+    models: ModelsOutput;
+    format: 'auto' | 'prettier' | false;
+    keepSpec: boolean;
   };
-  generators?: GeneratorId[];
-  compliance?: { strict?: boolean };
-  runtime?: {
-    baseURL?: string;
-    timeout?: number;
-    validationRate?: number;
-  };
-}
-
-export interface ApiSyncConfig {
-  compliance?: { strict?: boolean };
-  runtime?: ServiceConfig['runtime'];
-  services: Record<string, ServiceConfig>;
-}
-
-export interface ResolvedServiceConfig extends ServiceConfig {
-  namespace: string;
   generators: GeneratorId[];
   compliance: { strict: boolean };
+  runtime?: ServiceConfig['runtime'];
 }
 
 export interface APIContract {
   raw: string;
-  parsed: OpenAPIV3.Document;
+  parsed: OpenAPIDocument;
   hash: string;
 }
 
@@ -54,34 +51,25 @@ export interface DiffReport {
   summary: string;
 }
 
-export interface PipelineMeta {
-  outputDir: string;
-  strictMode: boolean;
-  hasBreakingChange: boolean;
-  exitCode: number;
-}
+export type Baseline =
+  | { kind: 'missing' }
+  | { kind: 'present'; document: OpenAPIDocument };
 
-export interface PipelineContext {
+interface ServiceRunContext {
   cwd: string;
-  namespace: string;
   config: ResolvedServiceConfig;
+  outputDir: string;
+}
+
+export interface PulledContext extends ServiceRunContext {
   contract: APIContract;
-  baseline: OpenAPIV3.Document | null;
-  diff: DiffReport | null;
-  meta: PipelineMeta;
+  baseline: Baseline;
 }
 
-export type PipelineStageName =
-  | 'doctor'
-  | 'pull'
-  | 'diff'
-  | 'strict-gate'
-  | 'generate'
-  | 'format'
-  | 'cache-write';
-
-export interface StageResult {
-  name: PipelineStageName;
-  durationMs: number;
-  error?: string;
+export interface PipelineContext extends PulledContext {
+  diff: DiffReport;
 }
+
+export type GateDecision =
+  | { kind: 'proceed'; context: PipelineContext }
+  | { kind: 'blocked'; context: PipelineContext };

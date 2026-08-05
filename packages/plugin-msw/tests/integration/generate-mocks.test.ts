@@ -1,5 +1,4 @@
 import '@somedayyoung/generator-orval';
-import '@somedayyoung/plugin-msw';
 import { execSync } from 'node:child_process';
 import fs from 'node:fs/promises';
 import os from 'node:os';
@@ -30,6 +29,7 @@ describe('msw mock generation', () => {
           private: true,
           type: 'module',
           dependencies: {
+            '@faker-js/faker': '^9.0.0',
             msw: '^2.0.0',
           },
         },
@@ -69,7 +69,7 @@ describe('msw mock generation', () => {
     });
     const services = resolveAllServices(loaded);
     const result = await runPipeline({ cwd: tmp, services });
-    expect(result.exitCode).toBe(0);
+    expect(result.kind).toBe('success');
 
     const outDir = path.join(tmp, 'src/api/generated');
     const entries = await fs.readdir(outDir);

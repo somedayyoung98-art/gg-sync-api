@@ -12,15 +12,12 @@ export default defineConfig({
         cliRoot,
         '../generator-orval/src/index.ts',
       ),
-      '@somedayyoung/plugin-react-query': path.join(
-        cliRoot,
-        '../plugin-react-query/src/index.ts',
-      ),
     },
   },
   test: {
     environment: 'node',
     include: ['tests/**/*.test.ts'],
     testTimeout: 60_000,
+    hookTimeout: 60_000,
   },
 });

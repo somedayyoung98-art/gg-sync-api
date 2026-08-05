@@ -1,4 +1,6 @@
-export default {
+import { defineConfig } from '@somedayyoung/api-sync';
+
+export default defineConfig({
   services: {
     user: {
       input: { path: './fixtures/user-openapi.json' },
@@ -11,4 +13,4 @@ export default {
       generators: ['typescript', 'sdk'],
     },
   },
-};
+});

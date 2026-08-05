@@ -11,15 +11,9 @@
   "bin": {
     "sync-api": "./dist/index.js"
   },
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    }
+    ".": "./dist/index.js"
   },
   "files": [
     "dist"
@@ -35,8 +29,10 @@
     "ora": "^8.2.0",
     "picocolors": "^1.1.1"
   },
+  "engines": {
+    "node": ">=20"
+  },
   "devDependencies": {
-    "@somedayyoung/plugin-react-query": "^3.0.0",
     "@tanstack/react-query": "^5.0.0",
     "@types/node": "^25.9.1",
     "tsup": "^8.4.0",

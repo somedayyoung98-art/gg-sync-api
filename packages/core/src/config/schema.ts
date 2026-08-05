@@ -1,3 +1,4 @@
+import path from 'node:path';
 import { z } from 'zod';
 
 export const generatorIdSchema = z.enum([
@@ -6,6 +7,25 @@ export const generatorIdSchema = z.enum([
   'react-query',
   'msw',
   'zod',
+]);
+
+export const modelsOutputSchema = z.union([
+  z.enum(['split', 'single']),
+  z
+    .object({
+      file: z
+        .string()
+        .min(1)
+        .endsWith('.ts')
+        .refine(
+          (file) =>
+            !path.posix.isAbsolute(file) &&
+            !path.win32.isAbsolute(file) &&
+            !file.split(/[\\/]/).includes('..'),
+          'Models file must be relative to output.dir',
+        ),
+    })
+    .strict(),
 ]);
 
 /** Namespace keys: letter-first alphanumeric, underscore, hyphen */
@@ -19,17 +39,16 @@ export const namespaceKeySchema = z
 
 export const serviceConfigSchema = z
   .object({
-    input: z
-      .object({
-        url: z.string().url().optional(),
-        path: z.string().min(1).optional(),
-      })
-      .refine((i) => Boolean(i.url) !== Boolean(i.path), {
-        message: 'Exactly one of input.url or input.path is required',
-      }),
+    input: z.union([
+      z.object({ path: z.string().min(1) }).strict(),
+      z.object({ url: z.string().url() }).strict(),
+    ]),
     output: z.object({
       dir: z.string().min(1),
-      models: z.enum(['split', 'single']).optional(),
+      models: modelsOutputSchema.optional(),
+      format: z
+        .union([z.enum(['auto', 'prettier']), z.literal(false)])
+        .optional(),
       /** Keep `.api-sync-openapi.json` under output.dir after codegen (default: false). */
       keepSpec: z.boolean().optional(),
     }),
@@ -61,18 +80,15 @@ export const apiSyncConfigSchema = z
       .record(namespaceKeySchema, serviceConfigSchema)
       .refine((s) => Object.keys(s).length > 0, {
         message: 'At least one service namespace is required',
-      })
-      .refine(
-        (services) => {
-          const dirs = Object.values(services).map((s) => s.output.dir);
-          return new Set(dirs).size === dirs.length;
-        },
-        {
-          message:
-            'Each service namespace must use a unique output.dir (isolated artifacts)',
-        },
-      ),
+      }),
   })
   .strict();
 
-export type ApiSyncConfigInput = z.infer<typeof apiSyncConfigSchema>;
+export type GeneratorId = z.infer<typeof generatorIdSchema>;
+export type ModelsOutput = z.infer<typeof modelsOutputSchema>;
+export type ServiceConfig = z.infer<typeof serviceConfigSchema>;
+export type ApiSyncConfig = z.infer<typeof apiSyncConfigSchema>;
+
+export function defineConfig(config: ApiSyncConfig): ApiSyncConfig {
+  return config;
+}

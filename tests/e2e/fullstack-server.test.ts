@@ -1,12 +1,16 @@
-import type { ChildProcess } from 'node:child_process';
+import { type ChildProcess, execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import http from 'node:http';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { execPmBuild, execSyncApi, spawnPmScript } from './lib/pm-exec';
 
-const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+const repoRoot = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '../..',
+);
 const exampleDir = path.join(repoRoot, 'examples/single-service');
 const cliDist = path.join(repoRoot, 'packages/cli/dist/index.js');
 const TEST_PORT = 3120;
@@ -21,11 +25,13 @@ function waitForServer(url: string, timeoutMs = 30_000): Promise<void> {
         .get(url, (res) => {
           res.resume();
           if (res.statusCode === 200) resolve();
-          else if (Date.now() > deadline) reject(new Error(`Unexpected status ${res.statusCode}`));
+          else if (Date.now() > deadline)
+            reject(new Error(`Unexpected status ${res.statusCode}`));
           else setTimeout(tick, 200);
         })
         .on('error', () => {
-          if (Date.now() > deadline) reject(new Error(`Server not ready: ${url}`));
+          if (Date.now() > deadline)
+            reject(new Error(`Server not ready: ${url}`));
           else setTimeout(tick, 200);
         });
     };
@@ -37,7 +43,11 @@ function runSyncApiUrl(): void {
   execSyncApi(['run', '--config', './api-sync.config.url.ts'], {
     cwd: exampleDir,
     stdio: 'pipe',
-    env: { ...process.env, OPENAPI_URL: OPENAPI_JSON_URL },
+    env: {
+      ...process.env,
+      OPENAPI_URL: OPENAPI_JSON_URL,
+      API_BASE_URL: SERVER_ORIGIN,
+    },
   });
 }
 
@@ -80,7 +90,7 @@ describe('examples/single-service fullstack (Koa → URL → generate)', () => {
   it('pulls schema via input.url and generates TypeScript models + sdk', () => {
     runSyncApiUrl();
 
-    const generated = path.join(exampleDir, 'src/api/generated');
+    const generated = path.join(exampleDir, 'src/api/generated-url');
     const userModel = path.join(generated, 'models/user.ts');
     expect(fs.existsSync(path.join(generated, 'sdk.ts'))).toBe(true);
     expect(fs.existsSync(userModel)).toBe(true);
@@ -89,15 +99,41 @@ describe('examples/single-service fullstack (Koa → URL → generate)', () => {
     expect(source).toContain('export interface User');
     expect(source).toContain('firstName');
 
-    const createProductModel = path.join(generated, 'models/createProductRequest.ts');
+    const createProductModel = path.join(
+      generated,
+      'models/createProductRequest.ts',
+    );
     expect(fs.existsSync(createProductModel)).toBe(true);
-    expect(fs.readFileSync(createProductModel, 'utf8')).toContain('export interface CreateProductRequest');
+    expect(fs.readFileSync(createProductModel, 'utf8')).toContain(
+      'export interface CreateProductRequest',
+    );
 
     const sdk = fs.readFileSync(path.join(generated, 'sdk.ts'), 'utf8');
     expect(sdk).toContain('createProduct');
+    expect(sdk).toMatch(/Promise<User>/);
+    expect(sdk).not.toContain('getUserByIdResponse200');
 
-    expect(fs.existsSync(path.join(exampleDir, '.api-sync-cache/main/latest-schema.json'))).toBe(
-      true,
+    const tsxCli = createRequire(path.join(exampleDir, 'package.json')).resolve(
+      'tsx/cli',
     );
+    const result = execFileSync(
+      process.execPath,
+      [
+        tsxCli,
+        '--eval',
+        "import('./src/api/generated-url/sdk.ts').then(async ({ getUserById }) => console.log(JSON.stringify(await getUserById('u_1'))))",
+      ],
+      { cwd: exampleDir, encoding: 'utf8' },
+    );
+    expect(JSON.parse(result.trim())).toMatchObject({
+      id: 'u_1',
+      firstName: 'Jane',
+    });
+
+    expect(
+      fs.existsSync(
+        path.join(exampleDir, '.api-sync-cache/main/latest-schema.json'),
+      ),
+    ).toBe(true);
   });
 });

@@ -11,7 +11,7 @@ describe('cache store', () => {
     if (tmp) await fs.rm(tmp, { recursive: true, force: true });
   });
 
-  it('writes and reads baseline atomically', async () => {
+  it('writes and reads a baseline', async () => {
     tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'api-sync-cache-'));
     const doc = {
       openapi: '3.0.0',
@@ -20,6 +20,18 @@ describe('cache store', () => {
     };
     await writeBaseline(tmp, 'main', doc as never, 'abc123');
     const loaded = await readBaseline(tmp, 'main');
-    expect(loaded?.info.title).toBe('T');
+    expect(loaded).toMatchObject({
+      kind: 'present',
+      document: { info: { title: 'T' } },
+    });
   });
+
+  it('returns missing when the baseline does not exist', async () => {
+    tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'api-sync-cache-'));
+
+    await expect(readBaseline(tmp, 'missing')).resolves.toEqual({
+      kind: 'missing',
+    });
+  });
+
 });

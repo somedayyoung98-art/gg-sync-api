@@ -1,13 +1,12 @@
 import type { ResolvedServiceConfig } from './types';
-import type { PipelineContext, StageResult } from './types';
+import type { PipelineContext } from './types';
 import { filterServicesByNamespace } from './namespace';
 import { runPullStage } from './stages/pull';
 import { runDiffStage } from './stages/diff';
 import { runStrictGate } from './stages/strict-gate';
-import { runGenerateStage } from './stages/generate';
 import { runFormatStage } from './stages/format';
-import { runCacheWriteStage } from './stages/cache-write';
-import { assertDoctorPassed, runDoctorStage } from './stages/doctor';
+import { generateCode } from '../plugins/registry';
+import { writeBaseline } from '../cache/store';
 
 export interface RunPipelineOptions {
   cwd: string;
@@ -17,18 +16,13 @@ export interface RunPipelineOptions {
 
 export type PipelineMode = 'full' | 'diff-only';
 
-export interface NamespaceRunResult {
-  namespace: string;
-  exitCode: number;
-  outputDir: string;
-}
+export type ServiceOutcome =
+  | { readonly kind: 'success'; readonly context: PipelineContext }
+  | { readonly kind: 'blocked'; readonly context: PipelineContext };
 
 export interface PipelineRunResult {
-  contexts: PipelineContext[];
-  exitCode: number;
-  stages: StageResult[];
-  /** Per-namespace outcomes (aggregated exitCode is 1 if any namespace failed). */
-  namespaces: NamespaceRunResult[];
+  readonly kind: 'success' | 'blocked';
+  readonly outcomes: readonly ServiceOutcome[];
 }
 
 export async function runPipeline(
@@ -40,67 +34,35 @@ export async function runPipeline(
     options.namespaceFilter,
   );
 
-  const contexts: PipelineContext[] = [];
-  const stages: StageResult[] = [];
-  let exitCode = 0;
-
-  const doctorResult = await timed(stages, 'doctor', async () => {
-    const result = await runDoctorStage(options.cwd, services);
-    assertDoctorPassed(result);
-    return result;
-  });
-
-  void doctorResult;
+  const outcomes: ServiceOutcome[] = [];
 
   for (const service of services) {
-    let ctx = await timed(stages, 'pull', () =>
-      runPullStage(options.cwd, service),
-    );
-    ctx = await timed(stages, 'diff', () => runDiffStage(ctx));
-    ctx = runStrictGate(ctx);
-    if (ctx.meta.exitCode !== 0) {
-      contexts.push(ctx);
-      exitCode = 1;
+    const pulled = await runPullStage(options.cwd, service);
+    const compared = await runDiffStage(pulled);
+    const gate = runStrictGate(compared);
+    if (gate.kind === 'blocked') {
+      outcomes.push(gate);
       continue;
     }
 
     if (mode === 'diff-only') {
-      contexts.push(ctx);
+      outcomes.push({ kind: 'success', context: gate.context });
       continue;
     }
 
-    ctx = await timed(stages, 'generate', () => runGenerateStage(ctx));
-    ctx = await timed(stages, 'format', () => runFormatStage(ctx));
-    ctx = await timed(stages, 'cache-write', () => runCacheWriteStage(ctx));
-    contexts.push(ctx);
-    if (ctx.meta.exitCode !== 0) exitCode = 1;
+    await generateCode(gate.context);
+    const formatted = await runFormatStage(gate.context);
+    await writeBaseline(
+      formatted.cwd,
+      formatted.config.namespace,
+      formatted.contract.parsed,
+      formatted.contract.hash,
+    );
+    outcomes.push({ kind: 'success', context: formatted });
   }
 
-  const namespaces: NamespaceRunResult[] = contexts.map((ctx) => ({
-    namespace: ctx.namespace,
-    exitCode: ctx.meta.exitCode,
-    outputDir: ctx.meta.outputDir,
-  }));
-
-  return { contexts, exitCode, stages, namespaces };
-}
-
-async function timed<T>(
-  stages: StageResult[],
-  name: StageResult['name'],
-  fn: () => Promise<T>,
-): Promise<T> {
-  const start = Date.now();
-  try {
-    const result = await fn();
-    stages.push({ name, durationMs: Date.now() - start });
-    return result;
-  } catch (e) {
-    stages.push({
-      name,
-      durationMs: Date.now() - start,
-      error: e instanceof Error ? e.message : String(e),
-    });
-    throw e;
-  }
+  const kind = outcomes.some((outcome) => outcome.kind === 'blocked')
+    ? 'blocked'
+    : 'success';
+  return { kind, outcomes };
 }

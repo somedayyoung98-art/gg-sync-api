@@ -1,6 +1,6 @@
 import { getOpenApiServerUrl } from '../../../env';
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi';
-import type { OpenAPIObject } from 'openapi-types';
+import type { OpenAPIV3 } from 'openapi-types';
 import { CreateProductSchema, ProductSchema } from '../schemas/product';
 import { GetUserParamsSchema, UserSchema } from '../schemas/user';
 
@@ -55,7 +55,7 @@ registry.registerPath({
 });
 
 /** 从服务端 Zod 定义生成 OpenAPI 3.0.3（与真实路由同源） */
-export function buildOpenApiDocument(): OpenAPIObject {
+export function buildOpenApiDocument(): OpenAPIV3.Document {
   const generator = new OpenApiGeneratorV3(registry.definitions);
   return generator.generateDocument({
     openapi: '3.0.3',
@@ -66,5 +66,5 @@ export function buildOpenApiDocument(): OpenAPIObject {
         'Generated at runtime from Koa route + Zod schemas (examples/single-service/server).',
     },
     servers: [{ url: getOpenApiServerUrl(), description: 'Configured via OPENAPI_SERVER_URL or HOST/PORT' }],
-  }) as OpenAPIObject;
+  }) as OpenAPIV3.Document;
 }

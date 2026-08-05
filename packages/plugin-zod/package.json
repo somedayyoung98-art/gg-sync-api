@@ -1,7 +1,7 @@
 {
   "name": "@somedayyoung/plugin-zod",
   "version": "3.0.0",
-  "description": "Zod validation schema generator plugin",
+  "description": "Compatibility marker for built-in Zod generation",
   "license": "MIT",
   "publishConfig": {
     "access": "public",
@@ -16,16 +16,18 @@
       "import": "./dist/index.js"
     }
   },
+  "files": [
+    "dist"
+  ],
   "peerDependencies": {
     "zod": "^3.24.0"
   },
-  "dependencies": {
-    "@somedayyoung/core": "^3.0.0",
-    "@somedayyoung/generator-orval": "^3.0.0"
-  },
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && tsc -p tsconfig.dts.json",
     "test": "vitest run --passWithNoTests"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "devDependencies": {
     "tsup": "^8.4.0",

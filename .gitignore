@@ -31,11 +31,6 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Changesets
-.changeset/*.md
-!.changeset/README.md
-!.changeset/config.json
-
 # Spec Kit / planning (local only — not pushed to GitHub)
 specs/
 .specify/

@@ -4,5 +4,5 @@
     "noEmit": true,
     "rootDir": "."
   },
-  "include": ["api-sync.config.ts", "src/**/*.ts", "server/**/*.ts", "env.ts"]
+  "include": ["api-sync.config*.ts", "src/**/*.ts", "server/**/*.ts", "env.ts"]
 }

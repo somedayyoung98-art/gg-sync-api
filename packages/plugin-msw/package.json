@@ -1,7 +1,7 @@
 {
   "name": "@somedayyoung/plugin-msw",
   "version": "3.0.0",
-  "description": "MSW mock generator plugin",
+  "description": "Compatibility marker for built-in MSW generation",
   "license": "MIT",
   "publishConfig": {
     "access": "public",
@@ -16,18 +16,22 @@
       "import": "./dist/index.js"
     }
   },
+  "files": [
+    "dist"
+  ],
   "peerDependencies": {
+    "@faker-js/faker": "^9.0.0",
     "msw": "^2.0.0"
   },
-  "dependencies": {
-    "@somedayyoung/core": "^3.0.0",
-    "@somedayyoung/generator-orval": "^3.0.0"
-  },
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && tsc -p tsconfig.dts.json",
     "test": "vitest run"
   },
+  "engines": {
+    "node": ">=20"
+  },
   "devDependencies": {
+    "@faker-js/faker": "^9.0.0",
     "@somedayyoung/core": "^3.0.0",
     "@somedayyoung/generator-orval": "^3.0.0",
     "msw": "^2.0.0",

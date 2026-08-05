@@ -9,6 +9,8 @@ export default defineConfig({
     name: 'e2e',
     environment: 'node',
     include: ['tests/e2e/**/*.test.ts'],
+    fileParallelism: false,
+    maxWorkers: 1,
     testTimeout: 120_000,
   },
   resolve: {

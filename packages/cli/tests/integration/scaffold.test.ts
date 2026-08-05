@@ -37,6 +37,7 @@ describe('sync-api scaffold', () => {
 
     const client = await fs.readFile(path.join(apiRoot, 'runtime/client.ts'), 'utf8');
     expect(client).toContain('@somedayyoung/runtime');
+    expect(client).toMatch(/export async function customFetch/);
   });
 
   it('skips existing files without --force', async () => {

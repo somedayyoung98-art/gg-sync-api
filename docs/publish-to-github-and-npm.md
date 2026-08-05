@@ -2,114 +2,61 @@
 
 仓库：<https://github.com/somedayyoung98-art/gg-sync-api>
 
-## 一、GitHub（已完成可跳过）
+## 发布前检查
 
 ```powershell
-git push origin HEAD:main
-```
-
-## 二、发布到 npm（@somedayyoung/* v1.0.0）
-
-### 前提（必做）
-
-1. **npm 账号**  
-   注册：<https://www.npmjs.com/signup>
-
-2. **创建组织 `gg-sync`**（否则发布会 `404 Not Found`）  
-   - 打开：<https://www.npmjs.com/org/create>  
-   - Organization name 填：**`gg-sync`**（与包名 `@somedayyoung/...` 一致）  
-   - 选择 **Unlimited public packages**（免费公开包）  
-   - 你的 npm 用户必须是该组织的 owner/member  
-
-3. **本机登录官方源**（不要用仅镜像的登录）
-
-   ```powershell
-   npm login --registry=https://registry.npmjs.org
-   npm whoami --registry=https://registry.npmjs.org
-   ```
-
-4. **开启 npm 发布用 2FA（必做，否则会 E403）**  
-   - 打开：<https://www.npmjs.com/settings/~account/two-factor-auth-login>  
-   - 选择 **Authorization and publishing**（或更高等级）  
-   - 用手机 Authenticator 绑定  
-
-   发布时终端会要求输入 6 位 OTP；或在命令前加：
-
-   ```powershell
-   $env:NPM_CONFIG_OTP="123456"   # 换成 Authenticator 当前验证码
-   pnpm release
-   ```
-
-4. **确认未把 publish 指到 npmmirror**  
-   若 `npm config get registry` 是 `npmmirror.com`，发布仍会失败。  
-   本仓库已在 `.npmrc` 中设置 `@gg-sync:registry=https://registry.npmjs.org/`。
-
-### 本地已准备的版本
-
-- 所有 `@somedayyoung/*` 包版本：**1.0.0**（Changesets 已执行 `version-packages`）
-- 发布入口包：`@somedayyoung/api-sync`
-
-### 发布命令
-
-在项目根目录：
-
-```powershell
-cd d:\Project\gg-sync-api
+pnpm install --frozen-lockfile
 pnpm build
-pnpm release
+pnpm test
+git status --short
 ```
 
-等价于 `pnpm build && changeset publish`，会按顺序发布 fixed 组内 8 个包。
+确认源码、测试、构建产物和消费者 tarball 回归全部通过。仓库文件中不得包含 npm token；认证信息只保存在用户级 npm 配置或 CI secret 中。
 
-### 若 `pnpm release` 仍失败
-
-**404 + `@gg-sync`** → 未创建 npm 组织 `gg-sync`，回到上文第 2 步。
-
-**401 Unauthorized** → 执行 `npm login --registry=https://registry.npmjs.org`。
-
-**403 + Two-factor authentication ... required to publish** → 在 npm 账号开启 **Authorization and publishing** 2FA，发布时输入 OTP（见上文第 4 步）。
-
-**`TypeError: Cannot read properties of undefined (reading 'includes')`** → 多为 Changesets 在解析 npm 错误时的二次崩溃；先看上一条 **403/404** 的真实原因，按 2FA 或创建组织处理后再执行 `pnpm release`。
-
-**只想发入口包（不推荐）**  
-消费者依赖链需要 `@somedayyoung/core` 等同时存在；应发布全部 8 个包。
-
-### 发布后验证
+## 推送 GitHub
 
 ```powershell
-npm view @somedayyoung/api-sync version --registry=https://registry.npmjs.org
+git push origin main
 ```
 
-新建空目录测试：
+## 发布 npm
+
+所有公开包使用 `@somedayyoung` scope，并由 Changesets fixed group 保持同一版本。
+
+1. 登录 npm 官方源并确认身份：
 
 ```powershell
-mkdir C:\temp\gg-sync-smoke
-cd C:\temp\gg-sync-smoke
-pnpm init
-pnpm add -D @somedayyoung/api-sync
-npx sync-api --help
+npm login --registry=https://registry.npmjs.org
+npm whoami --registry=https://registry.npmjs.org
 ```
 
-业务项目安装：
-
-```bash
-pnpm add -D @somedayyoung/api-sync
-```
-
-### 之后发新版本
+2. 为功能变更创建 changeset，并应用版本：
 
 ```powershell
 pnpm changeset
 pnpm version-packages
-git add -A && git commit -m "chore: version packages"
+```
+
+3. 提交版本文件和 changelog，推送 `main`，然后发布：
+
+```powershell
+git add -A
+git commit -m "chore: release packages"
 git push origin main
 pnpm release
 ```
 
-### 无法使用 `@gg-sync` 组织时
+`pnpm release` 会先构建全部包，再由 Changesets 发布 fixed group 中的包。需要 OTP 时，按 npm 的交互提示输入，不要把 token 或 OTP 写入仓库。
 
-若组织名已被占用，需要把整个 monorepo 的包名从 `@somedayyoung/*` 改成你有权限的 scope（例如 `@你的npm用户名/*`），并更新 `dependencies` 与 `.changeset/config.json` 中的 fixed 列表。
+## 发布后验证
 
----
+```powershell
+npm view @somedayyoung/api-sync version --registry=https://registry.npmjs.org
+npx --yes @somedayyoung/api-sync --help
+```
 
-发布前请执行：`pnpm test && pnpm build`
+常见错误：
+
+- `401 Unauthorized`：重新执行 `npm login`。
+- `403`：检查 scope 发布权限、2FA 或 npm provenance 策略。
+- 版本已存在：创建 changeset 并发布新的版本，不能覆盖 npm 上已有版本。
