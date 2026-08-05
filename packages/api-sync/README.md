@@ -46,9 +46,22 @@ export default defineConfig({
 也可以使用本地契约：
 
 ```typescript
-input: {
-  path: "./openapi.json";
-}
+import { defineConfig } from "@somedayyoung/api-sync";
+
+export default defineConfig({
+  services: {
+    main: {
+      input: { path: "./fixtures/account-group.openapi.json" },
+      output: {
+        dir: "./src/api",
+        models: { file: "type.ts" },
+        format: "auto",
+      },
+      generators: ["typescript", "sdk"],
+      compliance: { strict: false },
+    },
+  },
+});
 ```
 
 本地文件中的相对外部 `$ref` 会从 OpenAPI 文件所在目录解析；合法的递归 `$ref` 会保留并生成递归 TypeScript 类型。

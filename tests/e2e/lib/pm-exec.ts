@@ -1,4 +1,5 @@
 import { type ChildProcess, execFileSync, spawn } from 'node:child_process';
+import path from 'node:path';
 
 export type PackageManager = 'npm' | 'pnpm' | 'yarn';
 
@@ -87,16 +88,22 @@ export function execPmBuild(cwd: string, stdio: 'inherit' | 'pipe' = 'inherit'):
   execPmArgv('npm', ['run', 'build'], { cwd, stdio });
 }
 
-/** Run sync-api via the active package manager (pnpm exec / npm exec). */
+/** Run the sync-api binary installed by the consumer workspace. */
 export function execSyncApi(
   args: string[],
   options: { cwd: string; env?: NodeJS.ProcessEnv; stdio?: 'inherit' | 'pipe' },
 ): void {
-  const pm = detectPackageManager();
-
-  if (pm === 'pnpm' || pm === 'yarn') {
-    execPmArgv(pm, ['exec', 'sync-api', ...args], options);
-    return;
-  }
-  execPmArgv('npm', ['exec', '--', 'sync-api', ...args], options);
+  const bin = path.join(
+    options.cwd,
+    'node_modules',
+    '@somedayyoung',
+    'api-sync',
+    'bin',
+    'sync-api.js',
+  );
+  execFileSync(process.execPath, [bin, ...args], {
+    cwd: options.cwd,
+    stdio: options.stdio ?? 'pipe',
+    env: options.env ?? process.env,
+  });
 }

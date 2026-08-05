@@ -1,5 +1,14 @@
 # @somedayyoung/api-sync
 
+## 3.0.2
+
+### Patch Changes
+
+- Document the complete local OpenAPI workflow for generating `src/api/type.ts` and `src/api/sdk.ts`.
+  - @somedayyoung/cli@3.0.2
+  - @somedayyoung/core@3.0.2
+  - @somedayyoung/runtime@3.0.2
+
 ## 3.0.1
 
 ### Patch Changes
