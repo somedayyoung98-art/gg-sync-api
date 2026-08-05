@@ -30,7 +30,7 @@ importers:
   examples/multi-service:
     devDependencies:
       '@somedayyoung/api-sync':
-        specifier: ^3.0.3
+        specifier: ^3.0.4
         version: link:../../packages/api-sync
 
   examples/single-service:
@@ -45,10 +45,10 @@ importers:
         specifier: ^13.1.0
         version: 13.1.0
       '@somedayyoung/api-sync':
-        specifier: ^3.0.3
+        specifier: ^3.0.4
         version: link:../../packages/api-sync
       '@somedayyoung/core':
-        specifier: ^3.0.3
+        specifier: ^3.0.4
         version: link:../../packages/core
       '@tanstack/react-query':
         specifier: ^5.0.0
@@ -93,13 +93,13 @@ importers:
   packages/api-sync:
     dependencies:
       '@somedayyoung/cli':
-        specifier: ^3.0.3
+        specifier: ^3.0.4
         version: link:../cli
       '@somedayyoung/core':
-        specifier: ^3.0.3
+        specifier: ^3.0.4
         version: link:../core
       '@somedayyoung/runtime':
-        specifier: ^3.0.3
+        specifier: ^3.0.4
         version: link:../runtime
     devDependencies:
       tsup:
@@ -112,10 +112,10 @@ importers:
   packages/cli:
     dependencies:
       '@somedayyoung/core':
-        specifier: ^3.0.3
+        specifier: ^3.0.4
         version: link:../core
       '@somedayyoung/generator-orval':
-        specifier: ^3.0.3
+        specifier: ^3.0.4
         version: link:../generator-orval
       cac:
         specifier: ^6.7.14
@@ -171,7 +171,7 @@ importers:
         version: 3.5.4(zod@3.24.2)
     devDependencies:
       '@somedayyoung/generator-orval':
-        specifier: ^3.0.3
+        specifier: ^3.0.4
         version: link:../generator-orval
       '@types/node':
         specifier: ^25.9.1
@@ -192,7 +192,7 @@ importers:
         specifier: ^7.21.0
         version: 7.21.0(encoding@0.1.13)(openapi-types@12.1.3)(typescript@5.9.3)
       '@somedayyoung/core':
-        specifier: ^3.0.3
+        specifier: ^3.0.4
         version: link:../core
       orval:
         specifier: ^7.8.0
@@ -223,10 +223,10 @@ importers:
         specifier: ^9.0.0
         version: 9.0.0
       '@somedayyoung/core':
-        specifier: ^3.0.3
+        specifier: ^3.0.4
         version: link:../core
       '@somedayyoung/generator-orval':
-        specifier: ^3.0.3
+        specifier: ^3.0.4
         version: link:../generator-orval
       msw:
         specifier: ^2.0.0

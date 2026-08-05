@@ -1,5 +1,12 @@
 # @somedayyoung/generator-orval
 
+## 3.0.4
+
+### Patch Changes
+
+- Keep a single Orval file header when bundling models into one TypeScript file while preserving schema and property descriptions.
+  - @somedayyoung/core@3.0.4
+
 ## 3.0.3
 
 ### Patch Changes

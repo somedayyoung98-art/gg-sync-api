@@ -1,5 +1,7 @@
 # @somedayyoung/runtime
 
+## 3.0.4
+
 ## 3.0.3
 
 ### Patch Changes

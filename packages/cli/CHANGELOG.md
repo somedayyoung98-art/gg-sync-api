@@ -1,5 +1,13 @@
 # @somedayyoung/cli
 
+## 3.0.4
+
+### Patch Changes
+
+- Updated dependencies
+  - @somedayyoung/generator-orval@3.0.4
+  - @somedayyoung/core@3.0.4
+
 ## 3.0.3
 
 ### Patch Changes

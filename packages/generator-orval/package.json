@@ -1,6 +1,6 @@
 {
   "name": "@somedayyoung/generator-orval",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "Orval codegen bridge plugin",
   "license": "MIT",
   "publishConfig": {
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@orval/core": "^7.21.0",
-    "@somedayyoung/core": "^3.0.3",
+    "@somedayyoung/core": "^3.0.4",
     "orval": "^7.8.0",
     "rollup": "^4.62.4",
     "rollup-plugin-dts": "^6.5.1",
