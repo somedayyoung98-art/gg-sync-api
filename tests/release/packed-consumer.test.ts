@@ -39,9 +39,16 @@ function runNpm(args: string[], cwd: string) {
 
 describe('packed npm consumer', () => {
   let root = '';
+  let packageVersion = '';
   let tarballs: string[] = [];
 
   beforeAll(async () => {
+    packageVersion = JSON.parse(
+      await fs.readFile(
+        path.join(repoRoot, 'packages/api-sync/package.json'),
+        'utf8',
+      ),
+    ).version;
     root = await fs.mkdtemp(path.join(os.tmpdir(), 'api-sync-release-'));
     const packDir = path.join(root, 'packs');
     await fs.mkdir(packDir);
@@ -57,7 +64,11 @@ describe('packed npm consumer', () => {
 
     await fs.writeFile(
       path.join(root, 'package.json'),
-      JSON.stringify({ name: 'api-sync-consumer', private: true, type: 'module' }),
+      JSON.stringify({
+        name: 'api-sync-consumer',
+        private: true,
+        type: 'module',
+      }),
       'utf8',
     );
     await runNpm(
@@ -77,7 +88,7 @@ describe('packed npm consumer', () => {
     );
     const { stdout } = await run(process.execPath, [bin, '--version'], root);
 
-    expect(stdout).toMatch(/^sync-api\/3\.0\.0\b/);
+    expect(stdout.split(' ')[0]).toBe(`sync-api/${packageVersion}`);
   });
 
   it('loads a typed config, generates a custom type.ts, and compiles it', async () => {
@@ -194,7 +205,11 @@ void item;
 
     await run(
       process.execPath,
-      [path.join(repoRoot, 'node_modules/typescript/bin/tsc'), '-p', 'tsconfig.json'],
+      [
+        path.join(repoRoot, 'node_modules/typescript/bin/tsc'),
+        '-p',
+        'tsconfig.json',
+      ],
       root,
     );
   });
@@ -211,7 +226,11 @@ void item;
     );
 
     await expect(
-      run(process.execPath, [bin, 'run', '--config', './invalid.config.ts'], root),
+      run(
+        process.execPath,
+        [bin, 'run', '--config', './invalid.config.ts'],
+        root,
+      ),
     ).rejects.toMatchObject({
       stderr: expect.stringMatching(/services\.main\.output/),
     });

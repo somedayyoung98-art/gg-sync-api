@@ -1,6 +1,6 @@
 {
   "name": "@somedayyoung/core",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "API sync pipeline orchestrator",
   "license": "MIT",
   "publishConfig": {
@@ -39,7 +39,7 @@
     "node": ">=20"
   },
   "devDependencies": {
-    "@somedayyoung/generator-orval": "^3.0.0",
+    "@somedayyoung/generator-orval": "^3.0.1",
     "@types/node": "^25.9.1",
     "tsup": "^8.4.0",
     "typescript": "^6.0.3",

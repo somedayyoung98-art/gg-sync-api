@@ -1,6 +1,6 @@
 {
   "name": "@somedayyoung/api-sync",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Schema-driven API sync with a single install entry",
   "license": "MIT",
   "repository": {
@@ -37,9 +37,9 @@
     "prepack": "npm run build"
   },
   "dependencies": {
-    "@somedayyoung/cli": "^3.0.0",
-    "@somedayyoung/core": "^3.0.0",
-    "@somedayyoung/runtime": "^3.0.0"
+    "@somedayyoung/cli": "^3.0.1",
+    "@somedayyoung/core": "^3.0.1",
+    "@somedayyoung/runtime": "^3.0.1"
   },
   "engines": {
     "node": ">=20"

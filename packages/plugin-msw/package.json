@@ -1,6 +1,6 @@
 {
   "name": "@somedayyoung/plugin-msw",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Compatibility marker for built-in MSW generation",
   "license": "MIT",
   "publishConfig": {
@@ -32,8 +32,8 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.0.0",
-    "@somedayyoung/core": "^3.0.0",
-    "@somedayyoung/generator-orval": "^3.0.0",
+    "@somedayyoung/core": "^3.0.1",
+    "@somedayyoung/generator-orval": "^3.0.1",
     "msw": "^2.0.0",
     "tsup": "^8.4.0",
     "typescript": "^6.0.3",
